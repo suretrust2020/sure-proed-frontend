@@ -8,6 +8,8 @@ import {
 import {
   AUTH_ROUTES_NAMESPACE,
   GALLERY_PATH,
+  PROTECTED_ROUTES,
+  PROTECTED_ROUTES_NAMESPACE,
   PUBLIC_ROUTES_NAMESPACE,
   ROUTES,
   ROUTES_DIR,
@@ -88,6 +90,10 @@ export default [
     layout(`${ROUTES_DIR}/auth/layout.tsx`, [
       route("login", `${AUTH_ROUTES_NAMESPACE}/login/page.tsx`),
       route("signup", `${AUTH_ROUTES_NAMESPACE}/signup/page.tsx`),
+    ]),
+
+    layout(`${PROTECTED_ROUTES_NAMESPACE}/layout.tsx`, [
+      route(PROTECTED_ROUTES.logout, `${PROTECTED_ROUTES_NAMESPACE}/logout.ts`),
     ]),
   ]),
 ] satisfies RouteConfig;

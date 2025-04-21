@@ -10,6 +10,8 @@ import { toaster } from "@/components/ui/toaster";
 export function LoginForm() {
   const submit = useSubmit();
   const navigation = useNavigation();
+  const isLoading =
+    navigation.state !== "idle" && navigation.formAction?.includes("/login");
   const {
     formState: { errors },
     handleSubmit,
@@ -60,11 +62,7 @@ export function LoginForm() {
           <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
         </Field.Root>
 
-        <Button
-          loading={navigation.formAction?.includes("/login")}
-          type="submit"
-          colorPalette={"purple"}
-        >
+        <Button loading={isLoading} type="submit" colorPalette={"purple"}>
           Sign in
         </Button>
       </Stack>
