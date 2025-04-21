@@ -76,13 +76,7 @@ export default [
       `${PUBLIC_ROUTES_NAMESPACE}/website-developers/page.tsx`
     ),
     route(ROUTES.volunteers, `${PUBLIC_ROUTES_NAMESPACE}/volunteers/page.tsx`),
-    ...prefix(ROUTES.alumni, [
-      index(`${PUBLIC_ROUTES_NAMESPACE}/alumni/page.tsx`),
-      route(
-        ROUTES.alumniDirectory,
-        `${PUBLIC_ROUTES_NAMESPACE}/alumni/alumni-directory/page.tsx`
-      ),
-    ]),
+    route(ROUTES.alumni, `${PUBLIC_ROUTES_NAMESPACE}/alumni/page.tsx`),
     ...prefix(ROUTES.internships, [
       index(`${PUBLIC_ROUTES_NAMESPACE}/internships/page.tsx`),
       route(":id", `${PUBLIC_ROUTES_NAMESPACE}/internships/projects/page.tsx`),
