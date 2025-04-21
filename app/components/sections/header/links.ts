@@ -1,10 +1,10 @@
 import { ROUTES } from "@/lib/constant";
 
 export const commonLinks = [
+  { name: "Home", href: "/" },
   { name: "About", href: ROUTES.about },
   { name: "Contacts", href: ROUTES.contacts },
-  { name: "Courses", href: ROUTES.courses },
-  { name: "Internshipts", href: ROUTES.internships },
+  { name: "Internships", href: ROUTES.courses },
   { name: "Services for Community", href: ROUTES.communityService },
   { name: "Lifeskills Training Program", href: ROUTES.lst },
   { name: "Website Developers", href: ROUTES.websiteDevelopers },
@@ -15,7 +15,7 @@ export const commonLinks = [
 
 export const importantLinks = [
   { name: "Home", href: "/" },
-  { name: "Courses", href: ROUTES.courses },
+  { name: "Internships", href: ROUTES.courses },
   { name: "Services for Community", href: ROUTES.communityService },
   { name: "Volunteers", href: ROUTES.volunteers },
   { name: "Alumni", href: ROUTES.alumni },
