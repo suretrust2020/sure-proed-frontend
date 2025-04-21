@@ -1,0 +1,4 @@
+#nprogress .bar {
+  background: purple !important;
+  height: 3px;
+}
