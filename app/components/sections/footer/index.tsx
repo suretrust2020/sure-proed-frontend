@@ -42,15 +42,14 @@ const FOOTER_LINKS: FooterLinkGroup[] = [
     ],
   },
   {
-    title: "Programs & Training",
+    title: "Training",
     links: [
-      { label: "Courses", href: ROUTES.courses },
+      { label: "Internships", href: ROUTES.courses },
       { label: "Lifeskills Training Program", href: ROUTES.lst },
-      { label: "Internships", href: ROUTES.internships },
     ],
   },
   {
-    title: "Community & Alumni",
+    title: "Community",
     links: [
       { label: "Volunteers", href: ROUTES.volunteers },
       { label: "Alumni", href: ROUTES.alumni },
