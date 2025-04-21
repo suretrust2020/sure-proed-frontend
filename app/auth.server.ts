@@ -12,5 +12,6 @@ export async function getAuthData(request: Request) {
     session.get("regno"),
     session.get("token")
   );
+
   return userData;
 }
