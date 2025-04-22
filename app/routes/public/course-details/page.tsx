@@ -17,13 +17,18 @@ import {
   fetchCourseById,
   fetchCourseTeachers,
 } from "@/repositories/courses";
-import { fetchGithubProjects } from "@/repositories/github";
-import { Await, redirect } from "react-router";
-import { Suspense } from "react";
-import { GithubProjectCard } from "@/components/github-project-card";
+
+import { redirect } from "react-router";
+import { ProjectCard } from "@/components/github-project-card";
 import { EmptyData } from "@/components/empty-data";
 import { EnrollCourse } from "./enroll-course";
 import { getAuthSession } from "@/auth.server";
+import { ProjectDialog } from "./project-dialog";
+import {
+  fetchGitHubRepoData,
+  getAllProjectsByCourseId,
+  upsertProject,
+} from "@/repositories/projects";
 
 export default function CourseDetailsPage({
   loaderData,
@@ -42,8 +47,8 @@ export default function CourseDetailsPage({
           <Text className="text-xl">{course.prerequisites}</Text>
 
           <HStack mt={6}>
-            {/* {session && <EnrollCourseForm courseId={params.id} />} */}
             <EnrollCourse courseId={course.id} />
+            <ProjectDialog />
             {course.syllabus && (
               <SyllabusDialog
                 courseName={course.course_name}
@@ -69,46 +74,85 @@ export default function CourseDetailsPage({
         <Heading fontSize={"3xl"} mb={12} textAlign={"center"}>
           Github Projects
         </Heading>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Await resolve={loaderData?.githubProjectsPromise}>
-            {(projects) =>
-              projects.length ? (
-                <SimpleGrid gap={4} columns={[1, 2, 3]}>
-                  <For each={projects}>
-                    {(project) => (
-                      <GithubProjectCard key={project.title} {...project} />
-                    )}
-                  </For>
-                </SimpleGrid>
-              ) : (
-                <EmptyData
-                  title="No projects yet"
-                  description="It looks like there aren’t any projects to explore right now. Check back later or share your own!"
-                />
-              )
-            }
-          </Await>
-        </Suspense>
+
+        {loaderData.projects?.length ? (
+          <SimpleGrid gap={4} columns={[1, 2, 3, 4]}>
+            <For each={loaderData.projects}>
+              {(project) => (
+                <ProjectCard key={project._id.toString()} {...project} />
+              )}
+            </For>
+          </SimpleGrid>
+        ) : (
+          <EmptyData
+            title="No projects yet"
+            description="It looks like there aren’t any projects to explore right now. Check back later or share your own!"
+          />
+        )}
       </Container>
     </Box>
   );
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const course = await fetchCourseById(params.courseId);
-  const teachers = await fetchCourseTeachers(params.courseId);
-  const githubProjectsPromise = fetchGithubProjects(params.courseId);
+  const courseId = Number(params.courseId);
+  const [course, teachers, projects] = await Promise.all([
+    fetchCourseById(courseId),
+    fetchCourseTeachers(courseId),
+    getAllProjectsByCourseId(courseId),
+  ]);
+
   return {
     course,
     teachers,
-    githubProjectsPromise,
+    projects,
   };
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
-  const courseId = formData.get("courseId")?.toString();
   const session = await getAuthSession(request);
-  const resp = await enrollCourse(courseId, session.get("token"));
-  return resp;
+  const formData = await request.formData();
+  const courseId = Number(formData.get("courseId")?.toString());
+  const repoUrl = formData.get("repoUrl")?.toString();
+  const intent = formData.get("intent");
+
+  if (intent === "enroll") {
+    const enroll = await enrollCourse(courseId, session.get("token"));
+    return {
+      enroll,
+    };
+  } else if (intent === "project-preview") {
+    const projectPreview = await fetchGitHubRepoData(repoUrl);
+    return {
+      projectPreview,
+    };
+  } else if (intent === "project-submit") {
+    console.log("project-submit");
+    const projectPreview = await fetchGitHubRepoData(repoUrl);
+    console.log(projectPreview);
+    if (!projectPreview?.success || !projectPreview.data) {
+      return {
+        ...projectPreview,
+      };
+    }
+    const projectSubmit = await upsertProject({
+      author: projectPreview.data.owner.login,
+      courseId,
+      description: projectPreview.data.description,
+      language: projectPreview.data.language,
+      link: projectPreview.data.html_url,
+      userId: session.get("user_id"),
+      name: projectPreview.data.name,
+      authorAvatar: projectPreview.data.owner.avatar_url,
+    });
+
+    if (projectSubmit) {
+      return redirect(`/courses/${courseId}`);
+    }
+
+    return {
+      success: false,
+      message: "Error while submitting project",
+    };
+  }
 }

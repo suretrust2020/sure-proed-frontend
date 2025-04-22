@@ -11,7 +11,6 @@ import { fetchNotices } from "@/repositories/common";
 import { getAuthData } from "@/auth.server";
 import { useAuthStore } from "@/providers/auth-store-provider";
 import { useEffect } from "react";
-import { NavigationProgress } from "@/components/navigation-progress";
 
 export default function RootLayout({ loaderData }: Route.ComponentProps) {
   const addAuthData = useAuthStore((state) => state.addAuthData);
@@ -29,7 +28,6 @@ export default function RootLayout({ loaderData }: Route.ComponentProps) {
           minH="100vh"
           h="full"
         >
-          <NavigationProgress />
           <Header noticesPromise={loaderData.noticesPromise} />
           <Box as="main" h="full" flex={1} py={[6, 6, 8]}>
             <Outlet />

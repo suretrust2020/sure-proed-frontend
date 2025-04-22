@@ -249,3 +249,19 @@ export type InternshipDetailsType = {
     domain_name: string;
   };
 };
+
+export type GithubRepoType = {
+  name: string;
+  full_name: string;
+  html_url: string;
+  description: string;
+  stargazers_count: number;
+  forks_count: number;
+  watchers_count: number;
+  language: string;
+  owner: {
+    login: string;
+    avatar_url: string;
+    html_url: string;
+  };
+};

@@ -7,27 +7,30 @@ import { useFetcher } from "react-router";
 export function EnrollCourse({ courseId }: { courseId: number }) {
   const user = useAuthStore((state) => state.user);
   let fetcher = useFetcher();
-  let busy = fetcher.state === "submitting";
+  let busy =
+    fetcher.formData?.get("intent") === "enroll" &&
+    fetcher.state === "submitting";
 
   useEffect(() => {
     async function renderToast() {
-      if (fetcher.data) {
+      if (fetcher?.data?.enroll) {
         Promise.resolve().then(() => {
           toaster.create({
-            type: fetcher.data.success ? "success" : "error",
-            description: fetcher.data.message,
+            type: fetcher.data.enroll.success ? "success" : "error",
+            description: fetcher.data.enroll.message,
           });
         });
       }
     }
 
     renderToast();
-  }, [fetcher.data]);
+  }, [fetcher?.data?.enroll]);
 
   if (!user) return null;
   return (
     <fetcher.Form method="POST">
       <input type="hidden" name="courseId" value={courseId} />
+      <input type="hidden" name="intent" value={"enroll"} />
       <Button
         type="submit"
         size={"sm"}

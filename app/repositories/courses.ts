@@ -20,7 +20,7 @@ async function fetchCourses(category: string, page: number) {
   }
 }
 
-async function fetchCourseTeachers(id: string) {
+async function fetchCourseTeachers(id: number) {
   try {
     const resp = await fetch(
       `${env.BASEURL}/courses/get-course-teachers/${id}/`
@@ -34,7 +34,7 @@ async function fetchCourseTeachers(id: string) {
   }
 }
 
-async function fetchCourseById(id: string) {
+async function fetchCourseById(id: number) {
   try {
     const resp = await fetch(`${env.BASEURL}/courses/get-course/${id}/`);
     const data = await resp.json();
@@ -58,7 +58,7 @@ async function fetchAllCourses() {
   }
 }
 
-export async function enrollCourse(courseId?: string, token?: string) {
+export async function enrollCourse(courseId?: number, token?: string) {
   if (!courseId || !token) {
     throw new Error("Missing course ID or token. Please try again later.");
   }
