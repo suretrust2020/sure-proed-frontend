@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 // @ts-ignore
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -18,94 +18,105 @@ import {
   Input,
   Stack,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { ProjectPreview } from "./project-preview";
 import { XIcon } from "lucide-react";
+import { ProjectPreview } from "./project-preview";
+import debounce from "lodash.debounce";
 
 const projectSchema = z.object({
-  repoUrl: z.string().url(),
+  repoUrl: z.string().url("Please enter a valid URL"),
 });
 
-type ProjectSchema = z.infer<typeof projectSchema>;
+type ProjectFormValues = z.infer<typeof projectSchema>;
 
 export function ProjectForm({ onFormSubmit }: { onFormSubmit: () => void }) {
   const submit = useSubmit();
   const navigation = useNavigation();
   const params = useParams();
   const data = useActionData();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<ProjectFormValues>({
+    resolver: zodResolver(projectSchema),
+    defaultValues: { repoUrl: "" },
+  });
+
+  const repoUrl = watch("repoUrl");
+
   const isLoading =
     navigation.state !== "idle" &&
     navigation.formAction?.includes(`/courses/${params.courseId}`) &&
     navigation.formData?.get("intent") === "project-submit";
 
-  const {
-    formState: { errors },
-    handleSubmit,
-    register,
-    watch,
-    reset,
-  } = useForm({
-    resolver: zodResolver(projectSchema),
-    defaultValues: {
-      repoUrl: "",
-    },
-  });
-
-  const repoUrl = watch("repoUrl");
+  // Debounced preview submission for better performance
+  const debouncedPreview = debounce((url: string) => {
+    submit({ repoUrl: url, intent: "project-preview" }, { method: "POST" });
+  }, 500);
 
   useEffect(() => {
-    submit(
-      {
-        repoUrl,
-        intent: "project-preview",
-      },
-      {
-        method: "POST",
-      }
-    );
+    if (repoUrl) debouncedPreview(repoUrl);
+    return () => debouncedPreview.cancel();
   }, [repoUrl]);
 
-  async function onSubmit({ repoUrl }: ProjectSchema) {
-    await submit(
+  const onSubmit = (values: ProjectFormValues) => {
+    submit(
       {
-        repoUrl,
+        repoUrl: values.repoUrl,
         intent: "project-submit",
         courseId: params.courseId as string,
       },
-      {
-        method: "POST",
-      }
+      { method: "POST" }
     );
     reset();
     onFormSubmit();
-  }
+  };
+
+  const hasPreviewError =
+    !!errors.repoUrl || data?.projectPreview?.success === false;
 
   return (
     <form method="post" onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap="4">
-        <Field.Root colorPalette={"purple"} invalid={!!errors.repoUrl}>
-          <Field.Label>Paste project url</Field.Label>
+      <Stack gap={4}>
+        <Field.Root colorPalette="purple" invalid={hasPreviewError}>
+          <Field.Label htmlFor="repoUrl">Paste GitHub project URL</Field.Label>
           <HStack w="full">
-            <Input w="full" flex={1} {...register("repoUrl")} />
+            <Input
+              id="repoUrl"
+              placeholder="https://github.com/username/repo"
+              {...register("repoUrl")}
+            />
             {data?.projectPreview?.data && (
               <IconButton
                 onClick={() => reset()}
-                variant={"outline"}
-                aria-label="Clear"
+                variant="outline"
+                aria-label="Clear input"
               >
                 <XIcon />
               </IconButton>
             )}
           </HStack>
-          <Field.ErrorText>{errors.repoUrl?.message}</Field.ErrorText>
+          <Field.ErrorText>
+            {errors.repoUrl?.message || data?.projectPreview?.message}
+          </Field.ErrorText>
         </Field.Root>
+
         {data?.projectPreview?.data && (
           <Box my={4}>
             <ProjectPreview data={data.projectPreview.data} />
           </Box>
         )}
-        <Button loading={isLoading} type="submit" colorPalette={"purple"}>
-          Submit
+
+        <Button
+          type="submit"
+          colorPalette="purple"
+          loading={isLoading}
+          loadingText="Submitting"
+        >
+          Submit Project
         </Button>
       </Stack>
     </form>

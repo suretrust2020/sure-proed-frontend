@@ -56,8 +56,14 @@ export const upsertProject = async (
 
 export const getAllProjectsByCourseId = async (courseId: number) => {
   await connectToMongo();
-  const projects = await Projects.find({ courseId })
+  const projects = await Projects.find(
+    { courseId },
+    { createdAt: 0, updatedAt: 0 }
+  )
     .sort({ createdAt: -1 })
     .lean();
-  return projects;
+  return projects.map((project) => ({
+    ...project,
+    _id: project._id.toString(),
+  }));
 };

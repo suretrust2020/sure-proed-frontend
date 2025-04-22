@@ -78,9 +78,7 @@ export default function CourseDetailsPage({
         {loaderData.projects?.length ? (
           <SimpleGrid gap={4} columns={[1, 2, 3, 4]}>
             <For each={loaderData.projects}>
-              {(project) => (
-                <ProjectCard key={project._id.toString()} {...project} />
-              )}
+              {(project) => <ProjectCard key={project._id} {...project} />}
             </For>
           </SimpleGrid>
         ) : (
@@ -112,47 +110,75 @@ export async function loader({ params }: Route.LoaderArgs) {
 export async function action({ request }: Route.ActionArgs) {
   const session = await getAuthSession(request);
   const formData = await request.formData();
-  const courseId = Number(formData.get("courseId")?.toString());
+
+  const courseId = Number(formData.get("courseId"));
   const repoUrl = formData.get("repoUrl")?.toString();
-  const intent = formData.get("intent");
+  const intent = formData.get("intent")?.toString();
 
-  if (intent === "enroll") {
-    const enroll = await enrollCourse(courseId, session.get("token"));
-    return {
-      enroll,
-    };
-  } else if (intent === "project-preview") {
-    const projectPreview = await fetchGitHubRepoData(repoUrl);
-    return {
-      projectPreview,
-    };
-  } else if (intent === "project-submit") {
-    console.log("project-submit");
-    const projectPreview = await fetchGitHubRepoData(repoUrl);
-    console.log(projectPreview);
-    if (!projectPreview?.success || !projectPreview.data) {
-      return {
-        ...projectPreview,
-      };
-    }
-    const projectSubmit = await upsertProject({
-      author: projectPreview.data.owner.login,
-      courseId,
-      description: projectPreview.data.description,
-      language: projectPreview.data.language,
-      link: projectPreview.data.html_url,
-      userId: session.get("user_id"),
-      name: projectPreview.data.name,
-      authorAvatar: projectPreview.data.owner.avatar_url,
-    });
-
-    if (projectSubmit) {
-      return redirect(`/courses/${courseId}`);
-    }
-
+  if (!intent || isNaN(courseId)) {
     return {
       success: false,
-      message: "Error while submitting project",
+      message: "Invalid request parameters.",
     };
   }
+
+  const token = session.get("token");
+  const userId = session.get("user_id");
+
+  const handlers: Record<string, () => Promise<unknown>> = {
+    enroll: async () => {
+      const enroll = await enrollCourse(courseId, token);
+      return { enroll };
+    },
+
+    "project-preview": async () => {
+      if (!repoUrl) {
+        return { success: false, message: "Repository URL is required." };
+      }
+      const projectPreview = await fetchGitHubRepoData(repoUrl);
+      return { projectPreview };
+    },
+
+    "project-submit": async () => {
+      if (!repoUrl || !userId) {
+        return { success: false, message: "Missing repo URL or user session." };
+      }
+
+      const preview = await fetchGitHubRepoData(repoUrl);
+      if (!preview?.success || !preview.data) {
+        return { ...preview };
+      }
+
+      const data = preview.data;
+      const submission = await upsertProject({
+        author: data.owner.login,
+        courseId,
+        description: data.description,
+        language: data.language,
+        link: data.html_url,
+        userId,
+        name: data.name,
+        authorAvatar: data.owner.avatar_url,
+      });
+
+      if (submission) {
+        return redirect(`/courses/${courseId}`);
+      }
+
+      return {
+        success: false,
+        message: "Error while submitting project.",
+      };
+    },
+  };
+
+  const handler = handlers[intent];
+  if (!handler) {
+    return {
+      success: false,
+      message: "Unsupported action intent.",
+    };
+  }
+
+  return await handler();
 }

@@ -22,7 +22,7 @@ export const ProjectPreview = ({ data }: ProjectPreviewProps) => {
   if (!data) return null;
 
   return (
-    <Card.Root>
+    <Card.Root size={"sm"}>
       <Card.Body>
         <Flex align="center" mb={4}>
           <Avatar.Root size="sm" mr={4}>
