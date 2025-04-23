@@ -1,32 +1,31 @@
 import { InputGroup } from "@/components/ui/input-group";
 import { Box, Input, Kbd, type InputProps } from "@chakra-ui/react";
+import { parseAsString, useQueryState } from "nuqs";
 import React from "react";
 import { LuSearch } from "react-icons/lu/index.js";
-import { useSearchParams } from "react-router";
 
 type SearchInputProps = InputProps & {
   urlSearch?: boolean;
+  shallow?: boolean;
 };
 export function SearchInput({
   urlSearch = true,
+  shallow = false,
   ...inputProps
 }: SearchInputProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const key = inputProps.name || "search";
-  const defaultValue = urlSearch
-    ? searchParams.get(key)?.toString()
-    : inputProps.defaultValue;
+  const [search, setSearch] = useQueryState(
+    "search",
+    parseAsString.withDefault("").withOptions({
+      clearOnDefault: true,
+      shallow,
+    })
+  );
+
+  const defaultValue = search ?? inputProps.defaultValue;
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    if (e.target.value) {
-      newSearchParams.set(key, e.target.value);
-    } else {
-      newSearchParams.delete(key);
-    }
-
-    setSearchParams(newSearchParams);
+    setSearch(e.target.value);
   };
 
   React.useEffect(() => {
@@ -40,6 +39,7 @@ export function SearchInput({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
   return (
     <Box width={"full"}>
       <InputGroup

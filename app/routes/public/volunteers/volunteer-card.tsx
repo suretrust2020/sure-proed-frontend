@@ -1,7 +1,9 @@
-import { Avatar, Card, DataList, Tag } from "@chakra-ui/react";
+import { Avatar, Card, DataList, HStack, Stack, Text } from "@chakra-ui/react";
 import type { VolunteerType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { LinkedinIcon } from "@/lib/icons";
+import { ShareIcon } from "lucide-react";
+import { useShare } from "@/hooks/use-share";
 
 export function VolunteerCard({ volunteer }: { volunteer: VolunteerType }) {
   const items = [
@@ -18,21 +20,37 @@ export function VolunteerCard({ volunteer }: { volunteer: VolunteerType }) {
       value: volunteer.contribution,
     },
   ];
+  const share = useShare();
+
+  async function handleShare() {
+    const url = new URL(window.location.href);
+    url.searchParams.set("search", volunteer.name);
+
+    const shareInput = {
+      title: volunteer.name,
+      text: `${volunteer.designation}`,
+      url: url.toString(),
+    };
+    share(shareInput);
+  }
   return (
     <Card.Root>
       <Card.Body gap="2">
-        <Avatar.Root width={24} height={24}>
-          <Avatar.Fallback name={volunteer.name} />
-          <Avatar.Image src={volunteer.profile_pic} />
-        </Avatar.Root>
-        <Card.Title lineClamp={1} fontSize={16} mt="2">
-          {volunteer.name}
-        </Card.Title>
-        <Tag.Root width={"fit-content"} colorPalette={"purple"}>
-          <Tag.Label textTransform={"capitalize"}>
-            {volunteer.volunteer_type}
-          </Tag.Label>
-        </Tag.Root>
+        <HStack gap="3">
+          <Avatar.Root size={"xl"}>
+            <Avatar.Image src={volunteer.profile_pic} />
+            <Avatar.Fallback name={volunteer.name} />
+          </Avatar.Root>
+          <Stack gap="0">
+            <Text fontWeight="semibold" textStyle="sm">
+              {volunteer.name}
+            </Text>
+            <Text color="fg.muted" textStyle="sm">
+              {volunteer.volunteer_type}
+            </Text>
+          </Stack>
+        </HStack>
+
         <Card.Description>
           <DataList.Root orientation="vertical" gap={3} mt={3}>
             {items.map((item) => (
@@ -47,7 +65,16 @@ export function VolunteerCard({ volunteer }: { volunteer: VolunteerType }) {
         </Card.Description>
       </Card.Body>
       <Card.Footer>
-        <Button size={"sm"} asChild variant="subtle">
+        <Button
+          onClick={handleShare}
+          size={"sm"}
+          variant="solid"
+          colorPalette={"purple"}
+        >
+          <ShareIcon />
+          Share
+        </Button>
+        <Button size={"sm"} asChild variant="surface">
           <a href={volunteer.linkedinUrl} target={"_blank"}>
             <LinkedinIcon />
             Linkedin

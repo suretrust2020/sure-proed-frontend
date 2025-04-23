@@ -12,7 +12,7 @@ export function DeveloperCard({
   return (
     <Card.Root size={"sm"}>
       <Card.Body>
-        <HStack mb="6" gap="3">
+        <HStack mb="4" gap="3">
           <Avatar.Root size={"xl"}>
             <Avatar.Image src={image} />
             <Avatar.Fallback name={name} />
