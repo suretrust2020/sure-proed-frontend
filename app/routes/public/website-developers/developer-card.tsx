@@ -1,7 +1,6 @@
-import { Badge, Card } from "@chakra-ui/react";
-import { Avatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, Button, Card, HStack, Stack, Text } from "@chakra-ui/react";
 import type { DeveloperType } from "@/lib/types";
+import { LinkedinIcon } from "@/lib/icons";
 
 export function DeveloperCard({
   image,
@@ -11,19 +10,29 @@ export function DeveloperCard({
   links,
 }: DeveloperType) {
   return (
-    <Card.Root>
-      <Card.Body gap="2">
-        <Avatar src={image} name={name} size="2xl" shape="rounded" />
-        <Card.Title mt="2">{name}</Card.Title>
-        <Badge variant={"outline"} size={"md"} w="fit-content">
-          {position}
-        </Badge>
-        <Card.Description mt={2}>{education}</Card.Description>
+    <Card.Root size={"sm"}>
+      <Card.Body>
+        <HStack mb="6" gap="3">
+          <Avatar.Root size={"xl"}>
+            <Avatar.Image src={image} />
+            <Avatar.Fallback name={name} />
+          </Avatar.Root>
+          <Stack gap="0">
+            <Text fontWeight="semibold" textStyle="sm">
+              {name}
+            </Text>
+            <Text color="fg.muted" textStyle="sm">
+              {position}
+            </Text>
+          </Stack>
+        </HStack>
+        <Card.Description>{education}</Card.Description>
       </Card.Body>
-      <Card.Footer justifyContent="flex-end">
+      <Card.Footer>
         {links.map((link) => (
-          <Button size={"sm"} asChild key={link.name} variant="outline">
+          <Button size={"xs"} asChild key={link.name} variant="outline">
             <a target="_blank" href={link.url}>
+              <LinkedinIcon />
               {link.name}
             </a>
           </Button>
