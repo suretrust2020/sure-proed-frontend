@@ -38,9 +38,8 @@ export async function action({ request }: Route.ActionArgs) {
   const formObject = Object.fromEntries(formData.entries());
   const resp = await login(formObject);
 
-  const session = await getSession(request.headers.get("Cookie"));
-
   if (resp.success) {
+    const session = await getSession(request.headers.get("Cookie"));
     session.set("user_id", resp.data?.user_id);
     session.set("token", resp.data?.token);
     session.set("regno", resp.data?.regno);

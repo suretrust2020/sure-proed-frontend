@@ -1,7 +1,7 @@
 import { Box, Center } from "@chakra-ui/react";
 import { Outlet, redirect } from "react-router";
 import type { Route } from "./+types/layout";
-import { getSession } from "@/session.server";
+import { getAuthSession } from "@/auth.server";
 
 export default function AuthLayout() {
   return (
@@ -14,8 +14,10 @@ export default function AuthLayout() {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getSession(request.headers.get("Cookie"));
+  const session = await getAuthSession(request);
   if (session.has("token")) {
     return redirect("/");
   }
+
+  return null;
 }

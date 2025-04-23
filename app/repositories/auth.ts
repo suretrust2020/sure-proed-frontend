@@ -38,44 +38,29 @@ export async function signup(payload: any) {
 }
 
 export async function login(payload: any) {
-  return api
-    .url("/users/get-token/")
-    .post(payload)
-    .badRequest(async (err) => {
-      return {
-        success: false,
-        message: err.message,
-        data: null,
-      };
-    })
-    .internalError((err) => ({
-      success: true,
-      message: err.message,
-      data: null,
-    }))
-    .json<any>() // This must be last
-    .then((data) => {
-      if (data.error) {
-        return {
-          success: false,
-          message: data.error,
-          data,
-        };
-      }
+  try {
+    const resp = await api
+      .url("/users/get-token/")
+      .post(payload)
+      .badRequest((err) => {
+        throw new Error(err.message);
+      })
+      .internalError((err) => {
+        throw new Error("Internal server error");
+      })
+      .json<any>(); // This must be last
 
-      return {
-        success: true,
-        message: "Login successfully",
-        data,
-      };
-    })
-    .catch((err) => {
-      return {
-        success: false,
-        message: err.message,
-        data: null,
-      };
-    });
+    return {
+      success: true,
+      message: "Login successfully",
+      data: resp,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "Something went wrong",
+    };
+  }
 }
 
 export const fetchUserData = async (regno?: number, token?: string) => {
