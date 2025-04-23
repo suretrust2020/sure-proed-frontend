@@ -1,25 +1,25 @@
-import { Badge, Card } from "@chakra-ui/react";
-import { Avatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, Card, HStack, Stack, Text } from "@chakra-ui/react";
 import type { UserType } from "./types";
 
 export function UserCard({ bio, category, imageUrl, name }: UserType) {
   return (
-    <Card.Root variant={"outline"}>
-      <Card.Body gap="2">
-        <Avatar src={imageUrl} name={name} w={32} h={32} shape="full" />
-        <Card.Title mt="2">{name}</Card.Title>
-        <Badge
-          colorPalette={"purple"}
-          variant={"surface"}
-          size={"md"}
-          w="fit-content"
-        >
-          {category}
-        </Badge>
-        <Card.Description lineHeight={1.8} mt={2}>
-          {bio}
-        </Card.Description>
+    <Card.Root size={"sm"}>
+      <Card.Body>
+        <HStack mb="6" gap="3">
+          <Avatar.Root>
+            <Avatar.Image src={imageUrl} />
+            <Avatar.Fallback name={name} />
+          </Avatar.Root>
+          <Stack gap="0">
+            <Text fontWeight="semibold" textStyle="sm">
+              {name}
+            </Text>
+            <Text color="fg.muted" textStyle="sm">
+              {category}
+            </Text>
+          </Stack>
+        </HStack>
+        <Card.Description>{bio}</Card.Description>
       </Card.Body>
     </Card.Root>
   );

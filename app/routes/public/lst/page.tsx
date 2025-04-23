@@ -30,7 +30,6 @@ export default function LSTPage({ loaderData }: Route.ComponentProps) {
               Life Skills Training Form & Guidelines
             </Heading>
             <Text
-              fontSize="lg"
               color={{ base: "gray.700", _dark: "gray.300" }}
               lineHeight="1.8"
             >
@@ -56,7 +55,7 @@ export default function LSTPage({ loaderData }: Route.ComponentProps) {
         </Heading>
         <Stack gap={4} color={{ base: "gray.700", _dark: "gray.300" }}>
           {loaderData.into.map((text, i) => (
-            <Text fontSize="lg" lineHeight="1.8" textAlign="justify" key={i}>
+            <Text lineHeight="1.8" textAlign="justify" key={i}>
               {text}
             </Text>
           ))}
