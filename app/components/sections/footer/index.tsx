@@ -34,7 +34,7 @@ interface SocialLink {
 // Navigation link groups
 const FOOTER_LINKS: FooterLinkGroup[] = [
   {
-    title: "About",
+    title: "Common Links",
     links: [
       { label: "About", href: ROUTES.about },
       { label: "Contacts", href: ROUTES.contacts },
@@ -96,7 +96,7 @@ function SocialLinks() {
   return (
     <Box>
       <Text fontSize="lg" fontWeight="semibold" mb={4}>
-        Socials
+        Follow Along
       </Text>
       <HStack>
         {SOCIAL_LINKS.map((social) => (
