@@ -1,7 +1,6 @@
 import type { Config } from "@react-router/dev/config";
 
 const prerenderPaths = [
-  "/",
   "/about",
   "contacts",
   "/website-developers",
