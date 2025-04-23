@@ -1,5 +1,4 @@
-import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
-import { Card, HStack } from "@chakra-ui/react";
+import { Card, HStack, Skeleton, SkeletonText } from "@chakra-ui/react";
 
 export function CourseSkelton() {
   return (

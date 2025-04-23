@@ -1,8 +1,14 @@
 import { Pagination } from "@/components/shared/pagination";
-import { Card, Container, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
+import {
+  Button,
+  Card,
+  Container,
+  Flex,
+  Heading,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import type { Route } from "./+types/page";
 import { fetchDocs } from "@/repositories/gallery";
-import { Button } from "@/components/ui/button";
 import { ExternalLinkIcon } from "@/lib/icons";
 
 export default function DocumentsGallery({ loaderData }: Route.ComponentProps) {

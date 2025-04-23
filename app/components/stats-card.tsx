@@ -1,5 +1,4 @@
-import { Box } from "@chakra-ui/react";
-import { StatLabel, StatRoot, StatValueText } from "@/components/ui/stat";
+import { Box, StatLabel, StatRoot, StatValueText } from "@chakra-ui/react";
 
 export function StatsCard({
   icon,

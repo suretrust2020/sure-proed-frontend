@@ -1,6 +1,5 @@
-import { Container, For, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Button, Container, For, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DocsIcon, PhotoIcon, VideoIcon } from "@/lib/icons";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 export default function GalleryPage() {
   const services = [

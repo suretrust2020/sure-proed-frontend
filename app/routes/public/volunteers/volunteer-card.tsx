@@ -1,6 +1,13 @@
-import { Avatar, Card, DataList, HStack, Stack, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Button,
+  Card,
+  DataList,
+  HStack,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import type { VolunteerType } from "@/lib/types";
-import { Button } from "@/components/ui/button";
 import { LinkedinIcon } from "@/lib/icons";
 import { ShareIcon } from "lucide-react";
 import { useShare } from "@/hooks/use-share";

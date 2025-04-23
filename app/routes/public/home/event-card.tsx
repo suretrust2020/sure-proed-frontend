@@ -1,5 +1,6 @@
 import {
   Badge,
+  Button,
   HStack,
   Image,
   ListItem,
@@ -7,7 +8,6 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { Button } from "@/components/ui/button";
 import { format, getDate, parseISO } from "date-fns";
 import { VideoCall } from "@/lib/icons";
 

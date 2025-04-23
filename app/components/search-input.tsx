@@ -1,5 +1,4 @@
-import { InputGroup } from "@/components/ui/input-group";
-import { Box, Input, Kbd, type InputProps } from "@chakra-ui/react";
+import { Box, Input, InputGroup, Kbd, type InputProps } from "@chakra-ui/react";
 import { parseAsString, useQueryState } from "nuqs";
 import React from "react";
 import { LuSearch } from "react-icons/lu/index.js";

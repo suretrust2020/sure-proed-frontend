@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   Heading,
   SimpleGrid,
@@ -8,7 +9,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import type { Route } from "./+types/page";
-import { Button } from "@/components/ui/button";
 import { UserCard } from "./user-card";
 import Guidelines from "./guidelines";
 

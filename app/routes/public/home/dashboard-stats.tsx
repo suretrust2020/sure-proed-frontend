@@ -1,8 +1,12 @@
 import { Count } from "@/components/count";
-import { StatLabel, StatRoot, StatValueText } from "@/components/ui/stat";
 import { BatchIcon, CourseIcon, StudentIcon, UsersIcon } from "@/lib/icons";
 import type { Stat } from "@/lib/types";
-import { SimpleGrid } from "@chakra-ui/react";
+import {
+  SimpleGrid,
+  StatLabel,
+  StatRoot,
+  StatValueText,
+} from "@chakra-ui/react";
 
 export function DashboardStats({ stats }: { stats: Stat }) {
   const data = [
