@@ -24,7 +24,7 @@ export async function signup(payload: any) {
       success: true,
       message: "Server error",
     }))
-    .json<any>() // This must be last
+    .json<any>()
     .then(() => ({
       success: true,
       message: "Signup successfully",
@@ -50,12 +50,20 @@ export async function login(payload: any) {
       })
       .json<any>(); // This must be last
 
+    if (resp.error) {
+      return {
+        success: false,
+        message: resp.error,
+      };
+    }
+
     return {
       success: true,
       message: "Login successfully",
       data: resp,
     };
   } catch (error: any) {
+    console.error(error);
     return {
       success: false,
       message: error.message || "Something went wrong",
