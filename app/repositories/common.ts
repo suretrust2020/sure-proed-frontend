@@ -1,13 +1,10 @@
-import { env } from "@/lib/env";
-import type { NoticeType } from "@/lib/types";
-
+import { api } from "@/lib/api";
 export async function fetchNotices() {
   try {
-    const resp = await fetch(`${env.BASEURL}/home/notice/`);
-    const data = await resp.json();
-    return data as NoticeType[];
-  } catch (error) {
-    console.log(`error - fetchNotices()`);
-    throw error;
+    const data = await api.get(`/home/notice`).json();
+    return data;
+  } catch (error: any) {
+    console.error("API error:", error);
+    return [];
   }
 }

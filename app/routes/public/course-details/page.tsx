@@ -29,6 +29,7 @@ import {
   getAllProjectsByCourseId,
   upsertProject,
 } from "@/repositories/projects";
+import { ConfettiBlast } from "@/components/confetti";
 
 export default function CourseDetailsPage({
   loaderData,
@@ -57,6 +58,7 @@ export default function CourseDetailsPage({
             )}
           </HStack>
         </VStack>
+        <ConfettiBlast />
       </Container>
       <Box mb={16} bg={"bg.muted"} py={12}>
         <Container>

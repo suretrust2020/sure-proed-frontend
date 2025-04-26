@@ -18,5 +18,4 @@ export const importantLinks = [
   { name: "Internships", href: ROUTES.courses },
   { name: "Services for Community", href: ROUTES.communityService },
   { name: "Volunteers", href: ROUTES.volunteers },
-  { name: "Alumni", href: ROUTES.alumni },
 ];

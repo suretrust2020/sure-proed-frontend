@@ -12,7 +12,7 @@ import { WhyUs } from "./why-us";
 import ProjectsCarousel from "./projects-carousel";
 import { Collaborators } from "./collaborators";
 import { HOME_HERO_CONTENT } from "@/lib/data";
-import HeroSection from "./hero-section";
+import { HeroSection } from "./hero-section";
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (

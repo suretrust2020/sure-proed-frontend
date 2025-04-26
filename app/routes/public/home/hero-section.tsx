@@ -1,3 +1,6 @@
+"use client";
+
+import { ConfettiBlast } from "@/components/confetti";
 import { SITE_NAME, STUDENTS_UNDERGOING_TRAINING } from "@/lib/constant";
 import { HOME_HERO_CONTENT } from "@/lib/data";
 import {
@@ -14,7 +17,7 @@ import {
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 
-export default function HeroSection() {
+export function HeroSection() {
   return (
     <Box as="section" position="relative" overflow="hidden">
       <Container px={{ base: 4, sm: 6, lg: 8 }}>
@@ -123,6 +126,7 @@ export default function HeroSection() {
             </Box>
           </Box>
         </Grid>
+        <ConfettiBlast />
       </Container>
     </Box>
   );
