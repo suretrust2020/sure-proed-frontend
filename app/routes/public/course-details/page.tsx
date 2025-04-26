@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { TeacherCard } from "./teacher-card";
 import { SyllabusDialog } from "./syllabus-dialog";
+import Confetti from "react-confetti";
 
 import type { Route } from "./+types/page";
 import {
@@ -29,7 +30,6 @@ import {
   getAllProjectsByCourseId,
   upsertProject,
 } from "@/repositories/projects";
-import { ConfettiBlast } from "@/components/confetti";
 
 export default function CourseDetailsPage({
   loaderData,
@@ -58,7 +58,6 @@ export default function CourseDetailsPage({
             )}
           </HStack>
         </VStack>
-        <ConfettiBlast />
       </Container>
       <Box mb={16} bg={"bg.muted"} py={12}>
         <Container>
@@ -89,6 +88,7 @@ export default function CourseDetailsPage({
             description="It looks like there aren’t any projects to explore right now. Check back later or share your own!"
           />
         )}
+        <Confetti width={1400} height={600} numberOfPieces={100} />
       </Container>
     </Box>
   );

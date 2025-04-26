@@ -1,6 +1,3 @@
-"use client";
-
-import { ConfettiBlast } from "@/components/confetti";
 import { SITE_NAME, STUDENTS_UNDERGOING_TRAINING } from "@/lib/constant";
 import { HOME_HERO_CONTENT } from "@/lib/data";
 import {
@@ -16,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
+import Confetti from "react-confetti";
 
 export function HeroSection() {
   return (
@@ -126,7 +124,7 @@ export function HeroSection() {
             </Box>
           </Box>
         </Grid>
-        <ConfettiBlast />
+        <Confetti width={1400} height={600} numberOfPieces={100} />
       </Container>
     </Box>
   );
