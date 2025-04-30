@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { TeacherCard } from "./teacher-card";
 import { SyllabusDialog } from "./syllabus-dialog";
-import Confetti from "react-confetti";
 
 import type { Route } from "./+types/page";
 import {
@@ -88,7 +87,7 @@ export default function CourseDetailsPage({
             description="It looks like there aren’t any projects to explore right now. Check back later or share your own!"
           />
         )}
-        <Confetti width={1400} height={600} numberOfPieces={100} />
+        {/* <Confetti width={1400} height={600} numberOfPieces={100} /> */}
       </Container>
     </Box>
   );

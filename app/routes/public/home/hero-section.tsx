@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
-import Confetti from "react-confetti";
 
 export function HeroSection() {
   return (
@@ -124,7 +123,7 @@ export function HeroSection() {
             </Box>
           </Box>
         </Grid>
-        <Confetti width={1400} height={600} numberOfPieces={100} />
+        {/* <Confetti width={1400} height={600} numberOfPieces={100} /> */}
       </Container>
     </Box>
   );

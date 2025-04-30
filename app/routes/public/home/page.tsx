@@ -1,4 +1,4 @@
-import { HOME_HERO_VIDEO_URL, SITE_NAME } from "@/lib/constant";
+import { SITE_NAME } from "@/lib/constant";
 import { Box, Heading, Container, Stack } from "@chakra-ui/react";
 import { DashboardStats } from "./dashboard-stats";
 import type { Route } from "./+types/page";
@@ -9,10 +9,12 @@ import {
   fetchStats,
 } from "@/repositories/home";
 import { WhyUs } from "./why-us";
-import ProjectsCarousel from "./projects-carousel";
 import { Collaborators } from "./collaborators";
-import { HOME_HERO_CONTENT } from "@/lib/data";
 import { HeroSection } from "./hero-section";
+import { fetchFeaturedCourses } from "@/repositories/courses";
+import { FeaturedCourses } from "./featured-courses";
+import { Await } from "react-router";
+import React from "react";
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
@@ -34,14 +36,20 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         <WhyUs features={loaderData.features} />
       </Container>
 
-      {/* <Container>
-        <Heading textAlign={"center"} fontSize={"3xl"} mb={12}>
-          Internship Projects
-        </Heading>
-        <ProjectsCarousel projects={loaderData.projects} />
-      </Container> */}
+      <Box bg={"bg.muted"} py={12}>
+        <Container>
+          <Heading textAlign={"center"} fontSize={"3xl"} mb={12}>
+            Featured Internships
+          </Heading>
+          <React.Suspense fallback={<p>Loading...</p>}>
+            <Await resolve={loaderData.featuredCoursesPromise}>
+              {(courses) => <FeaturedCourses courses={courses} />}
+            </Await>
+          </React.Suspense>
+        </Container>
+      </Box>
 
-      <Box py={12}>
+      <Box>
         <Container>
           <Heading textAlign={"center"} fontSize={"3xl"} mb={12}>
             Collaborators
@@ -54,16 +62,21 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
 }
 
 export async function loader() {
-  const stats = await fetchStats();
-  const features = await fetchFeatures();
-  const projects = await fetchProjects();
-  const collaborators = await fetchCollaborators();
+  const [stats, features, projects, collaborators] = await Promise.all([
+    fetchStats(),
+    fetchFeatures(),
+    fetchProjects(),
+    fetchCollaborators(),
+  ]);
+
+  const featuredCoursesPromise = fetchFeaturedCourses();
 
   return {
     stats,
     features,
     projects,
     collaborators,
+    featuredCoursesPromise,
   };
 }
 

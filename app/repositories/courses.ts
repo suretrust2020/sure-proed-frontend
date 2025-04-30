@@ -20,6 +20,19 @@ async function fetchCourses(category: string, page: number) {
   }
 }
 
+async function fetchFeaturedCourses() {
+  try {
+    const resp = await fetch(
+      `${env.BASEURL}/courses/get_courses_by_param/?category=NON MEDICAL&page=1`
+    );
+    const data = await resp.json();
+    return data.results as CourseListType[];
+  } catch (error) {
+    console.log("courses fetch error");
+    throw error;
+  }
+}
+
 async function fetchCourseTeachers(id: number) {
   try {
     const resp = await fetch(
@@ -90,4 +103,10 @@ export async function enrollCourse(courseId?: number, token?: string) {
   }
 }
 
-export { fetchCourses, fetchCourseTeachers, fetchCourseById, fetchAllCourses };
+export {
+  fetchCourses,
+  fetchCourseTeachers,
+  fetchCourseById,
+  fetchAllCourses,
+  fetchFeaturedCourses,
+};

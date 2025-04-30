@@ -20,7 +20,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 
-import { useCarousel } from "@/hooks/useCarousel";
+import { useCarousel } from "@/hooks/use-carousel";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons";
 
 export default function PhotosCarousel({

@@ -5,7 +5,7 @@ import { ShareCourse } from "./share-course";
 
 export function CourseCard({ course }: { course: CourseListType }) {
   return (
-    <Card.Root size={"sm"}>
+    <Card.Root size={"sm"} w={"full"}>
       <Card.Body>
         <Card.Title>{course.course_name}</Card.Title>
         <Card.Description>{course.prerequisites}</Card.Description>

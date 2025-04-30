@@ -1,5 +1,5 @@
-import { Button, Flex } from "@chakra-ui/react";
 import type { Collaborator } from "@/lib/types";
+import { Card, Flex, For } from "@chakra-ui/react";
 
 export function Collaborators({
   collaborators,
@@ -7,19 +7,26 @@ export function Collaborators({
   collaborators: Collaborator[];
 }) {
   return (
-    <Flex justifyContent={"center"} wrap={"wrap"} gap={4}>
-      {collaborators.map(({ link, name, id }) => (
-        <Button
-          key={id}
-          size={"xl"}
-          variant={"outline"}
-          _hover={{ bg: "purple.500", color: "white" }}
-        >
-          <a href={link} target="_blank">
-            {name}
-          </a>
-        </Button>
-      ))}
+    <Flex gap={4} justify={"center"} flexWrap={"wrap"}>
+      <For each={collaborators}>
+        {(collaborator) => <CollaboratorCard collaborator={collaborator} />}
+      </For>
     </Flex>
+  );
+}
+
+function CollaboratorCard({ collaborator }: { collaborator: any }) {
+  return (
+    <a target="_blank" href={collaborator.link}>
+      <Card.Root
+        w="fit-content"
+        size="sm"
+        variant="elevated"
+        _hover={{ bg: "bg.muted" }}
+        transition={"all 0.4s "}
+      >
+        <Card.Body>{collaborator.name}</Card.Body>
+      </Card.Root>
+    </a>
   );
 }

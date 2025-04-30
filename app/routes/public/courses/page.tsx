@@ -6,7 +6,7 @@ import {
   Heading,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { CourseCard } from "./course-card";
+import { CourseCard } from "@/components/courses/course-card";
 import { CoursesPagination } from "./courses-pagination";
 import { CoursesFilter } from "./courses-filter";
 import type { Route } from "./+types/page";
