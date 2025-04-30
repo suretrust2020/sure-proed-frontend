@@ -50,8 +50,8 @@ export default function AboutPage({ loaderData }: Route.ComponentProps) {
         </Card.Root>
       </Container>
       <Separator mt={4} />
-      <Box bg={"bg.muted"}>
-        <Container pt={6}>
+      <Box bg={"bg.muted"} py={6}>
+        <Container>
           <VStack gap={12}>
             <BoardMembers
               title="Board Of Trustees"
