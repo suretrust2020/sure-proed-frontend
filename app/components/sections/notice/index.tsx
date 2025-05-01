@@ -5,7 +5,14 @@ import useEmblaCarousel from "embla-carousel-react";
 import { NoticeDetails } from "./notice-details";
 
 export function Notice({ notices }: { notices: NoticeType[] }) {
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay()]);
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [
+    Autoplay({
+      stopOnFocusIn: true,
+      stopOnMouseEnter: true,
+      playOnInit: true,
+      stopOnInteraction: false,
+    }),
+  ]);
 
   return (
     <Box

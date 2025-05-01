@@ -67,3 +67,43 @@ export const getAllProjectsByCourseId = async (courseId: number) => {
     _id: project._id.toString(),
   }));
 };
+
+export const fetchFeaturedProjects = async (): Promise<ProjectType[]> => {
+  await connectToMongo();
+
+  // Step 1: One per courseId
+  const groupedProjects = await Projects.aggregate([
+    { $sort: { createdAt: -1 } },
+    {
+      $group: {
+        _id: "$courseId",
+        doc: { $first: "$$ROOT" },
+      },
+    },
+    { $replaceRoot: { newRoot: "$doc" } },
+    {
+      $project: {
+        createdAt: 0,
+        updatedAt: 0,
+      },
+    },
+  ]);
+
+  const existingIds = groupedProjects.map((p) => p._id);
+
+  // Step 2: Fill up to 10 if needed
+  const additionalProjects = await Projects.find(
+    { _id: { $nin: existingIds } },
+    { createdAt: 0, updatedAt: 0 }
+  )
+    .sort({ createdAt: -1 })
+    .limit(10 - groupedProjects.length)
+    .lean();
+
+  const allProjects = [...groupedProjects, ...additionalProjects];
+
+  return allProjects.map((project: any) => ({
+    ...project,
+    _id: project._id.toString(),
+  }));
+};

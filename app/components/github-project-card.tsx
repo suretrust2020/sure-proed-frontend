@@ -1,14 +1,5 @@
 import type { ProjectType } from "@/lib/mongodb/models/projects";
-import {
-  Box,
-  Flex,
-  Avatar,
-  Text,
-  Badge,
-  Link,
-  Stack,
-  Card,
-} from "@chakra-ui/react";
+import { Box, Flex, Avatar, Text, Badge, Stack, Card } from "@chakra-ui/react";
 
 export const ProjectCard = ({
   author,
@@ -19,7 +10,7 @@ export const ProjectCard = ({
   authorAvatar,
 }: ProjectType) => {
   return (
-    <a href={link} target="_blank">
+    <a href={link} target="_blank" style={{ display: "block", width: "100%" }}>
       <Card.Root size={"sm"} h="full">
         <Card.Body>
           <Flex align="center" mb={4}>

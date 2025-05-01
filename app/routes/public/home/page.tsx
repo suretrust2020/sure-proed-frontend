@@ -15,6 +15,9 @@ import { fetchFeaturedCourses } from "@/repositories/courses";
 import { FeaturedCourses } from "./featured-courses";
 import { Await } from "react-router";
 import React from "react";
+import { fetchFeaturedProjects } from "@/repositories/projects";
+import { ProjectCard } from "./project-card";
+import { FeaturedProjects } from "./featured-projects";
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
@@ -48,6 +51,18 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           </React.Suspense>
         </Container>
       </Box>
+      <Box py={12}>
+        <Container>
+          <Heading textAlign={"center"} fontSize={"3xl"} mb={12}>
+            Featured Projects
+          </Heading>
+          <React.Suspense fallback={<p>Loading...</p>}>
+            <Await resolve={loaderData.featuredProjectsPromise}>
+              {(projects) => <FeaturedProjects projects={projects} />}
+            </Await>
+          </React.Suspense>
+        </Container>
+      </Box>
 
       <Box>
         <Container>
@@ -70,6 +85,7 @@ export async function loader() {
   ]);
 
   const featuredCoursesPromise = fetchFeaturedCourses();
+  const featuredProjectsPromise = fetchFeaturedProjects();
 
   return {
     stats,
@@ -77,6 +93,7 @@ export async function loader() {
     projects,
     collaborators,
     featuredCoursesPromise,
+    featuredProjectsPromise,
   };
 }
 
