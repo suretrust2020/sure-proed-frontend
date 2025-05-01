@@ -64,11 +64,13 @@ export const getAllProjectsByCourseId = async (courseId: number) => {
     .sort({ createdAt: -1 })
     .lean();
 
-  return projects.map(async (project) => ({
-    ...project,
-    _id: project._id.toString(),
-    course: await fetchCourseById(project.courseId),
-  }));
+  return await Promise.all(
+    projects.map(async (project: any) => ({
+      ...project,
+      _id: project._id.toString(),
+      course: await fetchCourseById(project.courseId),
+    }))
+  );
 };
 
 export const fetchFeaturedProjects = async () => {
