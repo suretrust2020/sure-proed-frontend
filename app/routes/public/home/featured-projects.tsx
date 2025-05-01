@@ -9,7 +9,7 @@ import {
 import type { ProjectType } from "@/lib/mongodb/models/projects";
 import { ProjectCard } from "@/components/github-project-card";
 
-export function FeaturedProjects({ projects }: { projects: ProjectType[] }) {
+export function FeaturedProjects({ projects }: { projects: any[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel();
   const {
     nextBtnDisabled,

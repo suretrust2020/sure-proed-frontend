@@ -2,6 +2,7 @@ import { connectToMongo } from "@/lib/mongodb/connections";
 import { Projects, type ProjectType } from "@/lib/mongodb/models/projects";
 import type { GithubRepoType } from "@/lib/types";
 import wretch from "wretch";
+import { fetchCourseById } from "./courses";
 
 export async function fetchGitHubRepoData(repoUrl?: string) {
   if (!repoUrl) return null;
@@ -62,16 +63,17 @@ export const getAllProjectsByCourseId = async (courseId: number) => {
   )
     .sort({ createdAt: -1 })
     .lean();
-  return projects.map((project) => ({
+
+  return projects.map(async (project) => ({
     ...project,
     _id: project._id.toString(),
+    course: await fetchCourseById(project.courseId),
   }));
 };
 
-export const fetchFeaturedProjects = async (): Promise<ProjectType[]> => {
+export const fetchFeaturedProjects = async () => {
   await connectToMongo();
 
-  // Step 1: One per courseId
   const groupedProjects = await Projects.aggregate([
     { $sort: { createdAt: -1 } },
     {
@@ -91,7 +93,6 @@ export const fetchFeaturedProjects = async (): Promise<ProjectType[]> => {
 
   const existingIds = groupedProjects.map((p) => p._id);
 
-  // Step 2: Fill up to 10 if needed
   const additionalProjects = await Projects.find(
     { _id: { $nin: existingIds } },
     { createdAt: 0, updatedAt: 0 }
@@ -102,8 +103,11 @@ export const fetchFeaturedProjects = async (): Promise<ProjectType[]> => {
 
   const allProjects = [...groupedProjects, ...additionalProjects];
 
-  return allProjects.map((project: any) => ({
-    ...project,
-    _id: project._id.toString(),
-  }));
+  return await Promise.all(
+    allProjects.map(async (project: any) => ({
+      ...project,
+      _id: project._id.toString(),
+      course: await fetchCourseById(project.courseId),
+    }))
+  );
 };
