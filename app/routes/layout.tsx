@@ -6,7 +6,7 @@ import { Outlet } from "react-router";
 import type { Route } from "./+types/layout";
 import { SITE_NAME } from "@/lib/constant";
 import { Footer } from "@/components/sections/footer";
-import { Providers } from "@/providers";
+
 import { fetchNotices } from "@/repositories/common";
 import { getAuthData } from "@/auth.server";
 import { useAuthStore } from "@/providers/auth-store-provider";
@@ -21,24 +21,22 @@ export default function RootLayout({ loaderData }: Route.ComponentProps) {
   }, [loaderData.authData]);
 
   return (
-    <Providers>
-      <ReactWrapBalanderProvider>
-        <Flex
-          flexDir="column"
-          justifyContent="space-between"
-          minH="100vh"
-          h="full"
-        >
-          <NavigationProgress />
-          <Header noticesPromise={loaderData.noticesPromise} />
-          <Box as="main" h="full" flex={1} py={[6, 6, 8]}>
-            <Outlet />
-          </Box>
-          <Footer />
-        </Flex>
-        <Toaster />
-      </ReactWrapBalanderProvider>
-    </Providers>
+    <ReactWrapBalanderProvider>
+      <Flex
+        flexDir="column"
+        justifyContent="space-between"
+        minH="100vh"
+        h="full"
+      >
+        <NavigationProgress />
+        <Header noticesPromise={loaderData.noticesPromise} />
+        <Box as="main" h="full" flex={1} py={[6, 6, 8]}>
+          <Outlet />
+        </Box>
+        <Footer />
+      </Flex>
+      <Toaster />
+    </ReactWrapBalanderProvider>
   );
 }
 

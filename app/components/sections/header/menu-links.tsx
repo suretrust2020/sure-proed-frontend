@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/menu";
 import { Link } from "react-router";
 import { AppsIcon } from "@/lib/icons";
-import { ROUTES } from "@/lib/constant";
 import { commonLinks } from "./links";
+import { useAuthStore } from "@/providers/auth-store-provider";
 
 export const authLinks = [
   { name: "Login", href: "/login" },
@@ -18,7 +18,7 @@ export const authLinks = [
 ];
 
 export function MenuLinks() {
-  const session = null;
+  const user = useAuthStore((state) => state.user);
 
   return (
     <MenuRoot>
@@ -28,7 +28,7 @@ export function MenuLinks() {
         </IconButton>
       </MenuTrigger>
       <MenuContent>
-        {!session && (
+        {!user && (
           <>
             <MenuItemGroup>
               {authLinks.map(({ name, href }) => (

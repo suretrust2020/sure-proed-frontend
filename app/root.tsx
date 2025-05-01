@@ -6,10 +6,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
-import { Analytics } from "@vercel/analytics/react";
 import type { Route } from "./+types/root";
-import { AuthStoreProvider } from "./providers/auth-store-provider";
+import { Providers } from "@/providers";
+import ErrorPage from "./components/error-page";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -44,40 +43,39 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <NuqsAdapter>
-      <Analytics />
-      <AuthStoreProvider>
-        <Outlet />
-      </AuthStoreProvider>
-    </NuqsAdapter>
+    <Providers>
+      <Outlet />
+    </Providers>
   );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
+  let status = 500;
+  let statusText = "";
+  let message = "";
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
+    status = error.status;
+    statusText = error.statusText;
+    message =
       error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
+        ? `Oops! Looks like this lesson or page has gone on a little adventure and can't be found. Please check the URL or head back to our  to explore more learning resources!`
+        : `Oh no! Our servers are having a tough time keeping up with your learning enthusiasm. We're working to fix this issue. Please try again in a few minutes or contact our  for assistance.`;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
+    statusText = error.message;
     stack = error.stack;
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
+    <Providers>
+      <ErrorPage status={status} statusText={statusText} message={message} />
+
       {stack && (
         <pre className="w-full p-4 overflow-x-auto">
           <code>{stack}</code>
         </pre>
       )}
-    </main>
+    </Providers>
   );
 }

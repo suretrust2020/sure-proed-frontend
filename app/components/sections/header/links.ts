@@ -15,6 +15,7 @@ export const commonLinks = [
 
 export const importantLinks = [
   { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
   { name: "Internships", href: ROUTES.courses },
   { name: "Services for Community", href: ROUTES.communityService },
   { name: "Volunteers", href: ROUTES.volunteers },

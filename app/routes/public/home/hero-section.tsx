@@ -1,5 +1,6 @@
 import { SITE_NAME, STUDENTS_UNDERGOING_TRAINING } from "@/lib/constant";
 import { HOME_HERO_CONTENT } from "@/lib/data";
+import { useAuthStore } from "@/providers/auth-store-provider";
 import {
   Box,
   Container,
@@ -15,6 +16,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 
 export function HeroSection() {
+  const user = useAuthStore((state) => state.user);
   return (
     <Box as="section" position="relative" overflow="hidden">
       <Container px={{ base: 4, sm: 6, lg: 8 }}>
@@ -63,7 +65,11 @@ export function HeroSection() {
                 colorPalette={"purple"}
                 asChild
               >
-                <Link to="/signup">Register Now</Link>
+                {user ? (
+                  <Link to="/profile">Profile</Link>
+                ) : (
+                  <Link to="/signup">Register Now</Link>
+                )}
               </Button>
               <Button
                 asChild

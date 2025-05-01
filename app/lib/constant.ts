@@ -1,5 +1,7 @@
 const SITE_NAME = "SURE ProEd";
 const SITE_TAGLINE = "In association with SURE Trust";
+const SITE_LOGO_URL =
+  "https://img1.wsimg.com/isteam/ip/6f038646-2052-4598-8c4e-ed7fea8124d5/SURE%20INITIATIVE%20LOGO.png/:/rs=h:200,cg:true,m/qt=q:95";
 const HOME_HERO_VIDEO_URL = "https://www.youtube.com/embed/4_NvQ57TYDo";
 const ALUMNI_HERO_VIDEO_URL = "https://www.youtube.com/embed/5elv45wEImo";
 const INTERNSHIP_HERO_IMAGE_URL = "internship-hero.jpeg";
@@ -68,4 +70,5 @@ export {
   ALUMNI_HERO_VIDEO_URL,
   PROTECTED_ROUTES_NAMESPACE,
   PROTECTED_ROUTES,
+  SITE_LOGO_URL,
 };

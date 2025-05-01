@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/providers/auth-store-provider";
 import { IconButton, Menu, Portal } from "@chakra-ui/react";
 import { UserIcon } from "lucide-react";
-import { useNavigation, useSubmit } from "react-router";
+import { Link, useNavigation, useSubmit } from "react-router";
 
 export function AccountMenu() {
   const user = useAuthStore((state) => state.user);
@@ -29,7 +29,10 @@ export function AccountMenu() {
       <Portal>
         <Menu.Positioner>
           <Menu.Content>
-            <Menu.Item value="profile">Profile</Menu.Item>
+            <Menu.Item asChild value="profile">
+              <Link to={"/profile"}>Profile</Link>
+            </Menu.Item>
+
             <Menu.Item
               value="logout"
               color="fg.error"
