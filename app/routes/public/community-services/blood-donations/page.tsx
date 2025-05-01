@@ -2,7 +2,7 @@ import { Box, Container, For, SimpleGrid } from "@chakra-ui/react";
 import { StatsCard } from "@/components/stats-card";
 import { fetchBloodDonationStats } from "@/repositories/community-services";
 import type { Route } from "./+types/page";
-import { ROUTES, SITE_NAME } from "@/lib/constant";
+import { SITE_NAME } from "@/lib/constant";
 import { ServicesChart } from "../services-chart";
 import { CourseCard } from "../course-card";
 import { BloodIcon } from "@/lib/icons";
@@ -10,7 +10,7 @@ import { BloodIcon } from "@/lib/icons";
 export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
   return (
     <Box>
-      <Box mb={8} bg="bg.muted" py={16}>
+      <Box mb={8}>
         <Container>
           <SimpleGrid columns={[1, 1, 2, 3]} gap={4}>
             <StatsCard count={loaderData.start} label={"Days"} />

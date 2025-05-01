@@ -20,7 +20,13 @@ export default function CoursesPage({ loaderData }: Route.ComponentProps) {
 
   return (
     <Container mx={"auto"}>
-      <Flex justify={"space-between"} gap={2} align={"center"} mb={6}>
+      <Flex
+        direction={["column", "column", "row"]}
+        justify={"space-between"}
+        gap={4}
+        align={"center"}
+        mb={6}
+      >
         <Heading textAlign={"center"} fontSize={"3xl"}>
           6-months Internship Programs
         </Heading>
@@ -28,7 +34,7 @@ export default function CoursesPage({ loaderData }: Route.ComponentProps) {
           <CoursesFilter />
         </Box>
       </Flex>
-      <SimpleGrid columns={[1, 1, 2, 3, 4]} gap={4}>
+      <SimpleGrid columns={[1, 2, 3, 3, 4]} gap={4}>
         <For each={coursesResults}>
           {(course) => <CourseCard key={course.id} course={course} />}
         </For>

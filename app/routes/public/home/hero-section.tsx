@@ -92,7 +92,12 @@ export function HeroSection() {
               </Button>
             </Flex>
 
-            <Flex alignItems="center" gap={4} pt={4}>
+            <Flex
+              alignItems="center"
+              gap={4}
+              pt={4}
+              justifyContent={["center", "left"]}
+            >
               <Text fontSize="sm" color="fg.muted">
                 <Text as="span" fontWeight="semibold">
                   {STUDENTS_UNDERGOING_TRAINING}+

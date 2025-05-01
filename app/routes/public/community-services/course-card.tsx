@@ -39,6 +39,7 @@ export function CourseCard({
                 <Avatar
                   variant="solid"
                   fallback={"+" + (course.users.length - 10)}
+                  colorPalette={"purple"}
                 />
               )}
             </AvatarGroup>

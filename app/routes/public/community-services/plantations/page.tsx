@@ -13,7 +13,7 @@ import { ServicesChart } from "../services-chart";
 export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
   return (
     <Box>
-      <Box mb={8} bg="bg.muted" py={16}>
+      <Box mb={8}>
         <Container>
           <SimpleGrid columns={[1, 1, 2, 3]} gap={4}>
             <StatsCard count={loaderData.stats.start} label={"Days"} showPlus />

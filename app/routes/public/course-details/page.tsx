@@ -46,7 +46,7 @@ export default function CourseDetailsPage({
 
           <Text className="text-xl">{course.prerequisites}</Text>
 
-          <HStack mt={6}>
+          <HStack mt={6} wrap={"wrap"}>
             <EnrollCourse courseId={course.id} />
             <ProjectDialog />
             {course.syllabus && (

@@ -2,7 +2,7 @@ import { Box, Container, For, SimpleGrid } from "@chakra-ui/react";
 import { StatsCard } from "@/components/stats-card";
 import { fetchSeniorCitizensStats } from "@/repositories/community-services";
 import type { Route } from "./+types/page";
-import { COMMUNITY_SERVICES, ROUTES, SITE_NAME } from "@/lib/constant";
+import { COMMUNITY_SERVICES, SITE_NAME } from "@/lib/constant";
 import { ServicesChart } from "../services-chart";
 import { CourseCard } from "../course-card";
 import { HelpIcon } from "@/lib/icons";
@@ -13,7 +13,7 @@ export default function SeniorCitizensPage({
 }: Route.ComponentProps) {
   return (
     <Box>
-      <Box mb={8} bg="bg.muted" py={16}>
+      <Box mb={8}>
         <Container>
           <SimpleGrid columns={[1, 1, 2, 3]} gap={4}>
             <StatsCard

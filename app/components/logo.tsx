@@ -16,7 +16,7 @@ export function Logo({
       <HStack gap={2}>
         <Image src={SITE_LOGO_URL} alt="Sure Trust" w={width} h={height} />
         {!compressed && (
-          <VStack gap={0} align="start">
+          <VStack gap={0} align="start" display={["none", "none", "flex"]}>
             <Heading size="md">{SITE_NAME}</Heading>
             <Text fontSize={"xs"}>{SITE_TAGLINE}</Text>
           </VStack>
