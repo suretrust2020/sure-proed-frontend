@@ -16,7 +16,6 @@ import { FeaturedCourses } from "./featured-courses";
 import { Await } from "react-router";
 import React from "react";
 import { fetchFeaturedProjects } from "@/repositories/projects";
-import { ProjectCard } from "./project-card";
 import { FeaturedProjects } from "./featured-projects";
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {

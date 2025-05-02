@@ -49,6 +49,7 @@ const ROUTES = {
 
 const PROTECTED_ROUTES = {
   logout: "logout",
+  profile: "profile",
 };
 export {
   SITE_NAME,

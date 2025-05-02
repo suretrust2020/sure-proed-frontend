@@ -88,6 +88,10 @@ export default [
 
     layout(`${PROTECTED_ROUTES_NAMESPACE}/layout.tsx`, [
       route(PROTECTED_ROUTES.logout, `${PROTECTED_ROUTES_NAMESPACE}/logout.ts`),
+      route(
+        PROTECTED_ROUTES.profile,
+        `${PROTECTED_ROUTES_NAMESPACE}/profile/page.tsx`
+      ),
     ]),
   ]),
 ] satisfies RouteConfig;
