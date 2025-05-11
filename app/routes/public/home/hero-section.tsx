@@ -19,11 +19,11 @@ export function HeroSection() {
   const user = useAuthStore((state) => state.user);
   return (
     <Box as="section" position="relative" overflow="hidden">
-      <Container px={{ base: 4, sm: 6, lg: 8 }}>
+      <Container px={{ base: 4, sm: 6, md: 8 }}>
         <Grid
-          py={{ base: 12, md: 16, lg: 20 }}
-          templateColumns={{ base: "1fr", lg: "1.5fr 1fr" }}
-          gap={{ base: 8, lg: 12 }}
+          py={{ base: 0, md: 16, lg: 20 }}
+          templateColumns={{ base: "1fr", md: "1.5fr 1fr" }}
+          gap={{ base: 8, md: 12 }}
           alignItems="center"
         >
           {/* Content */}
@@ -109,29 +109,21 @@ export function HeroSection() {
 
           {/* Image */}
           <Box
-            order={{ base: 1, lg: 2 }}
+            order={{ base: 1, md: 2 }}
             display="flex"
             justifyContent={{ base: "center", lg: "end" }}
           >
-            <Box
-              position="relative"
+            <Image
+              src="home-hero.png"
+              alt="Educational platform showcase"
+              aspectRatio={"auto"}
               w="full"
-              h="auto"
-              rounded="2xl"
-              overflow="hidden"
-              shadow="xl"
-            >
-              <Image
-                src="home-hero.jpeg"
-                alt="Educational platform showcase"
-                aspectRatio={"landscape"}
-                w="full"
-                h="auto"
-                objectFit={"fill"}
-              />
+              h="fit-content"
+              objectFit={"fill"}
+              rounded={"xl"}
+            />
 
-              {/* Decorative elements */}
-            </Box>
+            {/* Decorative elements */}
           </Box>
         </Grid>
         {/* <Confetti width={1400} height={600} numberOfPieces={100} /> */}
