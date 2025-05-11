@@ -6,6 +6,7 @@ import {
   prefix,
 } from "@react-router/dev/routes";
 import {
+  API_NAMESPACE,
   AUTH_ROUTES_NAMESPACE,
   GALLERY_PATH,
   PROTECTED_ROUTES,
@@ -94,4 +95,5 @@ export default [
       ),
     ]),
   ]),
+  ...prefix("/api", [route("/cloudinary", `${API_NAMESPACE}/cloudinary.ts`)]),
 ] satisfies RouteConfig;

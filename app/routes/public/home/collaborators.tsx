@@ -9,7 +9,9 @@ export function Collaborators({
   return (
     <Flex gap={4} justify={"center"} flexWrap={"wrap"}>
       <For each={collaborators}>
-        {(collaborator) => <CollaboratorCard collaborator={collaborator} />}
+        {(collaborator) => (
+          <CollaboratorCard key={collaborator.id} collaborator={collaborator} />
+        )}
       </For>
     </Flex>
   );

@@ -1,4 +1,4 @@
-import { Box, Container, For, SimpleGrid } from "@chakra-ui/react";
+import { Box, Container, Flex, For, SimpleGrid } from "@chakra-ui/react";
 import { StatsCard } from "@/components/stats-card";
 import {
   fetchPlantationData,
@@ -9,33 +9,40 @@ import { SITE_NAME } from "@/lib/constant";
 import { CourseCard } from "../course-card";
 import { PlantIcon } from "@/lib/icons";
 import { ServicesChart } from "../services-chart";
+import { env } from "@/lib/env";
+import { getAuthData, getAuthSession } from "@/auth.server";
+import { PlantationForm } from "./plantation-form";
+import { fetchAllCourses } from "@/repositories/courses";
+import { Plantations } from "@/lib/mongodb/models/plantations";
+import { redirect } from "react-router";
 
 export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
   return (
-    <Box>
+    <Container>
+      <Flex mb={8} justifyContent={"flex-end"}>
+        <PlantationForm courses={loaderData.courseList} />
+      </Flex>
       <Box mb={8}>
-        <Container>
-          <SimpleGrid columns={[1, 1, 2, 3]} gap={4}>
-            <StatsCard count={loaderData.stats.start} label={"Days"} showPlus />
-            <StatsCard
-              count={loaderData.stats.volunteers}
-              label={"Planters"}
-              showPlus
-            />
-            <StatsCard
-              count={loaderData.stats.plants}
-              label={"Plants"}
-              showPlus
-            />
-          </SimpleGrid>
-        </Container>
+        <SimpleGrid columns={[1, 1, 2, 3]} gap={4}>
+          <StatsCard count={loaderData.stats.start} label={"Days"} showPlus />
+          <StatsCard
+            count={loaderData.stats.volunteers}
+            label={"Planters"}
+            showPlus
+          />
+          <StatsCard
+            count={loaderData.stats.plants}
+            label={"Plants"}
+            showPlus
+          />
+        </SimpleGrid>
       </Box>
 
-      <Container display={["none", "none", "block"]}>
+      <Box display={["none", "none", "block"]}>
         <ServicesChart serviceType="Plantations" courses={loaderData.courses} />
-      </Container>
+      </Box>
 
-      <Container mt={8}>
+      <Box mt={8}>
         <SimpleGrid columns={[1, 1, 2, 3, 4]} gap={4}>
           <For each={loaderData.courses}>
             {(plantation) => (
@@ -48,18 +55,32 @@ export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
             )}
           </For>
         </SimpleGrid>
-      </Container>
-    </Box>
+      </Box>
+    </Container>
   );
 }
 
-export async function loader() {
-  const plantationData = await fetchPlantationData();
-  const stats = await fetchPlantationStats();
+export async function loader({ request }: Route.LoaderArgs) {
+  const [session, plantationData, stats, courseList] = await Promise.all([
+    getAuthData(request),
+    fetchPlantationData(),
+    fetchPlantationStats(),
+    fetchAllCourses(),
+  ]);
+
+  let authorized = false;
+  if (session?.user) {
+    authorized = false;
+    authorized = !!env.PLANTATION_USERS?.split(",")
+      .filter(Boolean)
+      .includes(String(session.user.id));
+  }
 
   return {
     courses: plantationData.map((p) => ({ ...p, course_name: p._id })),
     stats,
+    authorized,
+    courseList,
   };
 }
 
@@ -69,4 +90,45 @@ export function meta() {
       title: `Plantations | Services for community | ${SITE_NAME}`,
     },
   ] satisfies Route.MetaDescriptors;
+}
+
+export async function action({ request }: Route.ActionArgs) {
+  try {
+    const session = await getAuthSession(request);
+    if (!session) {
+      return redirect("/login");
+    }
+    const formData = await request.formData();
+    const formObject = Object.fromEntries(formData.entries());
+
+    const course = formObject.course || "Others";
+    const user = formObject.user || "";
+    const plants = formObject.plants || 0;
+    const batch = formObject.batch || "";
+    const slug = course && batch ? `${course}-(${batch})` : "Others";
+    const images = formObject.images
+      ? JSON.parse((formObject.images as any) || "[]")
+      : [];
+
+    const data = {
+      images,
+      course,
+      batch,
+      slug,
+      plants,
+      user,
+    };
+
+    await Plantations.create(data);
+    return {
+      success: true,
+      message: "Plantation data added successfully!",
+    };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
 }

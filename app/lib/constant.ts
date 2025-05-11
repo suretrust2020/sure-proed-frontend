@@ -23,6 +23,7 @@ const ROUTES_DIR = "./routes";
 const PUBLIC_ROUTES_NAMESPACE = `${ROUTES_DIR}/public`;
 const AUTH_ROUTES_NAMESPACE = `${ROUTES_DIR}/auth`;
 const PROTECTED_ROUTES_NAMESPACE = `${ROUTES_DIR}/protected`;
+const API_NAMESPACE = `${ROUTES_DIR}/api`;
 
 const COMMUNITY_SERVICE_PATH = "services-for-community";
 const GALLERY_PATH = "gallery";
@@ -51,6 +52,7 @@ const PROTECTED_ROUTES = {
   logout: "logout",
   profile: "profile",
 };
+
 export {
   SITE_NAME,
   SITE_TAGLINE,
@@ -72,4 +74,5 @@ export {
   PROTECTED_ROUTES_NAMESPACE,
   PROTECTED_ROUTES,
   SITE_LOGO_URL,
+  API_NAMESPACE,
 };
