@@ -20,7 +20,9 @@ export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
   return (
     <Container>
       <Flex mb={8} justifyContent={"flex-end"}>
-        <PlantationForm courses={loaderData.courseList} />
+        {loaderData.authorized && (
+          <PlantationForm courses={loaderData.courseList} />
+        )}
       </Flex>
       <Box mb={8}>
         <SimpleGrid columns={[1, 1, 2, 3]} gap={4}>
