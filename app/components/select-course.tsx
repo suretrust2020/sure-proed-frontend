@@ -1,5 +1,5 @@
 import type { CourseListType } from "@/lib/types";
-import { createListCollection, Portal, Select } from "@chakra-ui/react";
+import { createListCollection, Select } from "@chakra-ui/react";
 
 export function SelectCourse({ courses }: { courses: CourseListType[] }) {
   const collection = createListCollection({

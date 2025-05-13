@@ -1,5 +1,5 @@
+import { api } from "@/lib/api";
 import { COMMUNITY_SERVICES } from "@/lib/constant";
-import { daysAgo } from "@/lib/date-time";
 import { env } from "@/lib/env";
 import { connectToMongo } from "@/lib/mongodb/connections";
 import { Plantations } from "@/lib/mongodb/models/plantations";
@@ -9,10 +9,7 @@ import type {
   PaginatedResp,
   PlantationType,
 } from "@/lib/types";
-import {
-  calculateTimeDifferenceFromNow,
-  convertDaysToYears,
-} from "@/lib/utils";
+import { calculateTimeDifferenceFromNow } from "@/lib/utils";
 
 async function fetchPlantationData() {
   await connectToMongo();
@@ -98,6 +95,34 @@ async function fetchBloodDonation(page: number, courseName: string) {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+
+export async function createBloodDonation(data: any, token: string) {
+  try {
+    const response = await api
+      .url("/community/blood_donate/")
+      .auth(`Token ${token}`)
+      .post(data)
+      .unauthorized(() => {
+        throw new Error("Authentication failed.");
+      })
+      .json<any>();
+
+    if (response.error) {
+      throw new Error(response.error);
+    }
+    return {
+      success: true,
+      data: response,
+      message: "Added successfully!",
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      data: null,
+      message: error?.message || "Something went wrong. Please try again.",
+    };
   }
 }
 

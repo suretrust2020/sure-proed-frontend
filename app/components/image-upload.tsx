@@ -24,8 +24,10 @@ const errorMessages: Record<string, string> = {
 
 export function ImageUpload({
   onUpload,
+  limit = 3,
 }: {
   onUpload: (images: any[]) => void;
+  limit?: number;
 }) {
   const fetcher = useFetcher();
   const busy = fetcher.state !== "idle";
@@ -65,7 +67,7 @@ export function ImageUpload({
     <FileUpload.Root
       w="full"
       alignItems="stretch"
-      maxFiles={10}
+      maxFiles={limit}
       maxFileSize={1 * 1024 * 1024}
       accept={"image/*"}
       onFileReject={handleFileReject}
