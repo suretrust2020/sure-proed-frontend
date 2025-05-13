@@ -55,3 +55,16 @@ export function getLanguageColor(language: string): string {
 
   return languageColors[language] || "#d3d3d3"; // Default color for unknown languages
 }
+
+export function calculatePasswordStrength(password: string): number {
+  let score = 0;
+  if (!password) return score;
+
+  // Criteria
+  if (password.length >= 6) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+
+  return score; // Max score: 4
+}

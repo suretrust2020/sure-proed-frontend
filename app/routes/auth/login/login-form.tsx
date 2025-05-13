@@ -6,6 +6,7 @@ import { useActionData, useNavigation, useSubmit } from "react-router";
 import { Button, Field, Input, Stack } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { toaster } from "@/components/ui/toaster";
+import { PasswordInput } from "@/components/ui/password-input";
 
 export function LoginForm() {
   const submit = useSubmit();
@@ -58,7 +59,7 @@ export function LoginForm() {
         </Field.Root>
         <Field.Root colorPalette={"purple"} invalid={!!errors.password}>
           <Field.Label>Password</Field.Label>
-          <Input {...register("password")} type="password" />
+          <PasswordInput {...register("password")} type="password" />
           <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
         </Field.Root>
 
