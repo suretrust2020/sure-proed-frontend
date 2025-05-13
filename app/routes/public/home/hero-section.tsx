@@ -116,7 +116,7 @@ export function HeroSection() {
             <Image
               src="home-hero.png"
               alt="Educational platform showcase"
-              aspectRatio={"auto"}
+              aspectRatio={"landscape"}
               w="full"
               h="fit-content"
               objectFit={"fill"}
