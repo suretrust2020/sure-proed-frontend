@@ -161,6 +161,34 @@ async function fetchSeniorCitizens(page: number, courseName: string) {
   }
 }
 
+export async function createSeniorCitizen(data: any, token: string) {
+  try {
+    const response = await api
+      .url("/community/senior_citizen/")
+      .auth(`Token ${token}`)
+      .post(data)
+      .unauthorized(() => {
+        throw new Error("Authentication failed.");
+      })
+      .json<any>();
+
+    if (response.error) {
+      throw new Error(response.error);
+    }
+    return {
+      success: true,
+      data: response,
+      message: "Added successfully!",
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      data: null,
+      message: error?.message || "Something went wrong. Please try again.",
+    };
+  }
+}
+
 export {
   fetchPlantationData,
   fetchPlantationStats,

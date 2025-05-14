@@ -16,7 +16,7 @@ import { ImageUpload } from "@/components/image-upload";
 import { toaster } from "@/components/ui/toaster";
 import { SelectUserRoles } from "../select-user-roles";
 
-export function BloodDonationForm({ courses }: { courses: CourseListType[] }) {
+export function SeniorCitizenForm({ courses }: { courses: CourseListType[] }) {
   const [open, setOpen] = useState(false);
   const [images, setImages] = useState<any[]>([]);
 
@@ -51,7 +51,7 @@ export function BloodDonationForm({ courses }: { courses: CourseListType[] }) {
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>Blood donation</Dialog.Title>
+              <Dialog.Title>Senior citizen</Dialog.Title>
             </Dialog.Header>
             <Dialog.Body>
               <fetcher.Form

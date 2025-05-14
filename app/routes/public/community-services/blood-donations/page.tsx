@@ -72,7 +72,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   let authorized = false;
   if (session?.user) {
     authorized = false;
-    authorized = !!env.PLANTATION_USERS?.split(",")
+    authorized = !!env.COMMUNITY_SERVICES_USERS?.split(",")
       .filter(Boolean)
       .includes(String(session.user.id));
   }

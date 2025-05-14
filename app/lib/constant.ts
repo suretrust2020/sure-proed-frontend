@@ -53,6 +53,14 @@ const PROTECTED_ROUTES = {
   profile: "profile",
 };
 
+export const COMMUNITY_SERVICE_USER_ROLES = [
+  { value: "STUDENT", label: "Student" },
+  { value: "TRAINER", label: "Trainer" },
+  { value: "BOARD_MEMBER", label: "Board menber" },
+  { value: "IERY_MENTOR", label: "IERY mentor" },
+  { value: "IERY_INTERN", label: "IERY Intern" },
+];
+
 export {
   SITE_NAME,
   SITE_TAGLINE,
