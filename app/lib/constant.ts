@@ -24,6 +24,7 @@ const PUBLIC_ROUTES_NAMESPACE = `${ROUTES_DIR}/public`;
 const AUTH_ROUTES_NAMESPACE = `${ROUTES_DIR}/auth`;
 const PROTECTED_ROUTES_NAMESPACE = `${ROUTES_DIR}/protected`;
 const API_NAMESPACE = `${ROUTES_DIR}/api`;
+const ADMIN_ROUTES_NAMESPACE = `${ROUTES_DIR}/admin`;
 
 const COMMUNITY_SERVICE_PATH = "services-for-community";
 const GALLERY_PATH = "gallery";
@@ -46,11 +47,16 @@ const ROUTES = {
   alumniDirectory: "alumni-directory",
   internships: "internships",
   lst: "lifeskills-training-program",
+  admin: "admin",
 };
 
 const PROTECTED_ROUTES = {
   logout: "logout",
   profile: "profile",
+};
+
+export const ADMIN_ROUTES = {
+  projects: "projects",
 };
 
 export const COMMUNITY_SERVICE_USER_ROLES = [
@@ -83,4 +89,5 @@ export {
   PROTECTED_ROUTES,
   SITE_LOGO_URL,
   API_NAMESPACE,
+  ADMIN_ROUTES_NAMESPACE,
 };

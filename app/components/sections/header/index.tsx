@@ -24,7 +24,7 @@ import { AccountMenu } from "./account-menu";
 export function Header({
   noticesPromise,
 }: {
-  noticesPromise: Promise<NoticeType[]>;
+  noticesPromise?: Promise<NoticeType[]>;
 }) {
   const user = useAuthStore((state) => state.user);
   return (
@@ -37,11 +37,13 @@ export function Header({
       top={0}
       background={"gray.subtle"}
     >
-      <React.Suspense fallback={<Skeleton height={"44px"}></Skeleton>}>
-        <Await resolve={noticesPromise}>
-          {(value) => <Notice notices={value} />}
-        </Await>
-      </React.Suspense>
+      {noticesPromise && (
+        <React.Suspense fallback={<Skeleton height={"44px"}></Skeleton>}>
+          <Await resolve={noticesPromise}>
+            {(value) => <Notice notices={value} />}
+          </Await>
+        </React.Suspense>
+      )}
       <Container w="full" py={2}>
         <Flex justify="space-between" align="center" gap={0}>
           <Logo />

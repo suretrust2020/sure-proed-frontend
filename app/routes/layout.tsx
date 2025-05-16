@@ -1,17 +1,12 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { Header } from "@/components/sections/header";
-import { Toaster } from "@/components/ui/toaster";
-import { Provider as ReactWrapBalanderProvider } from "react-wrap-balancer";
 import { Outlet } from "react-router";
 import type { Route } from "./+types/layout";
 import { SITE_NAME } from "@/lib/constant";
-import { Footer } from "@/components/sections/footer";
 
 import { fetchNotices } from "@/repositories/common";
 import { getAuthData } from "@/auth.server";
 import { useAuthStore } from "@/providers/auth-store-provider";
 import { useEffect } from "react";
-import { NavigationProgress } from "@/components/navigation-progress";
+import { Provider as ReactWrapBalanderProvider } from "react-wrap-balancer";
 
 export default function RootLayout({ loaderData }: Route.ComponentProps) {
   const addAuthData = useAuthStore((state) => state.addAuthData);
@@ -22,20 +17,7 @@ export default function RootLayout({ loaderData }: Route.ComponentProps) {
 
   return (
     <ReactWrapBalanderProvider>
-      <Flex
-        flexDir="column"
-        justifyContent="space-between"
-        minH="100vh"
-        h="full"
-      >
-        <NavigationProgress />
-        <Header noticesPromise={loaderData.noticesPromise} />
-        <Box as="main" h="full" flex={1} py={[6, 6, 8]}>
-          <Outlet />
-        </Box>
-        <Footer />
-      </Flex>
-      <Toaster />
+      <Outlet />
     </ReactWrapBalanderProvider>
   );
 }

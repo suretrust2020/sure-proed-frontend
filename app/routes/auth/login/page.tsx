@@ -1,4 +1,4 @@
-import { Button, Card, HStack } from "@chakra-ui/react";
+import { Button, Card, HStack, Stack } from "@chakra-ui/react";
 import { Link, redirect } from "react-router";
 import { SITE_NAME } from "@/lib/constant";
 import type { Route } from "./+types/page";
@@ -18,7 +18,7 @@ export default function LoginPage() {
         <LoginForm />
       </Card.Body>
       <Card.Footer>
-        <HStack>
+        <Stack direction={["column", "row"]}>
           <Button variant="ghost" asChild size="sm">
             <Link to="/signup"> Not have an account ? Sign up</Link>
           </Button>
@@ -27,7 +27,7 @@ export default function LoginPage() {
               Forgotton password
             </a>
           </Button>
-        </HStack>
+        </Stack>
       </Card.Footer>
     </Card.Root>
   );
