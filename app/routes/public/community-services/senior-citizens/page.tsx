@@ -15,21 +15,23 @@ import { ServicesChart } from "../services-chart";
 import { CourseCard } from "../course-card";
 import { HelpIcon } from "@/lib/icons";
 import { calculateTimeDifferenceFromNow } from "@/lib/utils";
-import { getAuthData, getAuthSession } from "@/auth.server";
+import { getAuthSession } from "@/auth.server";
 import { fetchAllCourses, fetchCourseById } from "@/repositories/courses";
-import { env } from "@/lib/env";
 import { SeniorCitizenForm } from "./senio-citizen-form";
 import { redirect } from "react-router";
+import { useAuthStore } from "@/providers/auth-store-provider";
 
 export default function SeniorCitizensPage({
   loaderData,
 }: Route.ComponentProps) {
+  const featureAccess = useAuthStore((state) => state.featureAccess);
+
   return (
     <Box>
       <Box mb={8}>
         <Container>
           <Flex mb={8} justifyContent={"flex-end"}>
-            {loaderData.courseList && (
+            {featureAccess.includes("community-services") && (
               <SeniorCitizenForm courses={loaderData.courseList} />
             )}
           </Flex>
@@ -79,24 +81,14 @@ export default function SeniorCitizensPage({
   );
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const [session, result, courseList] = await Promise.all([
-    getAuthData(request),
+export async function loader() {
+  const [result, courseList] = await Promise.all([
     fetchSeniorCitizensStats(),
     fetchAllCourses(),
   ]);
 
-  let authorized = false;
-  if (session?.user) {
-    authorized = false;
-    authorized = !!env.COMMUNITY_SERVICES_USERS?.split(",")
-      .filter(Boolean)
-      .includes(String(session.user.id));
-  }
-
   return {
     result,
-    authorized,
     courseList,
   };
 }

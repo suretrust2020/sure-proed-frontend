@@ -9,18 +9,19 @@ import { SITE_NAME } from "@/lib/constant";
 import { CourseCard } from "../course-card";
 import { PlantIcon } from "@/lib/icons";
 import { ServicesChart } from "../services-chart";
-import { env } from "@/lib/env";
-import { getAuthData, getAuthSession } from "@/auth.server";
+import { getAuthSession } from "@/auth.server";
 import { PlantationForm } from "./plantation-form";
 import { fetchAllCourses } from "@/repositories/courses";
 import { Plantations } from "@/lib/mongodb/models/plantations";
 import { redirect } from "react-router";
+import { useAuthStore } from "@/providers/auth-store-provider";
 
 export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
+  const featureAccess = useAuthStore((state) => state.featureAccess);
   return (
     <Container>
       <Flex mb={8} justifyContent={"flex-end"}>
-        {loaderData.authorized && (
+        {featureAccess.includes("community-services") && (
           <PlantationForm courses={loaderData.courseList} />
         )}
       </Flex>
@@ -62,26 +63,16 @@ export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
   );
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const [session, plantationData, stats, courseList] = await Promise.all([
-    getAuthData(request),
+export async function loader() {
+  const [plantationData, stats, courseList] = await Promise.all([
     fetchPlantationData(),
     fetchPlantationStats(),
     fetchAllCourses(),
   ]);
 
-  let authorized = false;
-  if (session?.user) {
-    authorized = false;
-    authorized = !!env.COMMUNITY_SERVICES_USERS?.split(",")
-      .filter(Boolean)
-      .includes(String(session.user.id));
-  }
-
   return {
     courses: plantationData.map((p) => ({ ...p, course_name: p._id })),
     stats,
-    authorized,
     courseList,
   };
 }

@@ -74,7 +74,7 @@ export function PlantationForm({ courses }: { courses: CourseListType[] }) {
       <Dialog.Trigger>
         <Button variant="outline" size="sm">
           <PlusIcon />
-          Add Plantation
+          Add Data
         </Button>
       </Dialog.Trigger>
       <Portal>

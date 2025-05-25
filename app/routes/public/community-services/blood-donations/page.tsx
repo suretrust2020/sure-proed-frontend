@@ -9,18 +9,20 @@ import { COMMUNITY_SERVICE_PATH, ROUTES, SITE_NAME } from "@/lib/constant";
 import { ServicesChart } from "../services-chart";
 import { CourseCard } from "../course-card";
 import { BloodIcon } from "@/lib/icons";
-import { env } from "@/lib/env";
 import { fetchAllCourses, fetchCourseById } from "@/repositories/courses";
-import { getAuthData, getAuthSession } from "@/auth.server";
+import { getAuthSession } from "@/auth.server";
 import { BloodDonationForm } from "./blood-donation-form";
 import { redirect } from "react-router";
+import { useAuthStore } from "@/providers/auth-store-provider";
 
 export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
+  const featureAccess = useAuthStore((state) => state.featureAccess);
+
   return (
     <Box>
       <Container>
         <Flex mb={8} justifyContent={"flex-end"}>
-          {loaderData.authorized && (
+          {featureAccess.includes("community-services") && (
             <BloodDonationForm courses={loaderData.courseList} />
           )}
         </Flex>
@@ -62,24 +64,14 @@ export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
   );
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const [session, result, courseList] = await Promise.all([
-    getAuthData(request),
+export async function loader() {
+  const [result, courseList] = await Promise.all([
     fetchBloodDonationStats(),
     fetchAllCourses(),
   ]);
 
-  let authorized = false;
-  if (session?.user) {
-    authorized = false;
-    authorized = !!env.COMMUNITY_SERVICES_USERS?.split(",")
-      .filter(Boolean)
-      .includes(String(session.user.id));
-  }
-
   return {
     result,
-    authorized,
     courseList,
   };
 }
