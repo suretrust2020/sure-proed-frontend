@@ -107,15 +107,15 @@ export default [
         `${PROTECTED_ROUTES_NAMESPACE}/profile/page.tsx`
       ),
     ]),
-  ]),
-  ...prefix("/api", [route("/cloudinary", `${API_NAMESPACE}/cloudinary.ts`)]),
-  ...prefix(ROUTES.admin, [
-    layout(`${ADMIN_ROUTES_NAMESPACE}/layout.tsx`, [
-      index(`${ADMIN_ROUTES_NAMESPACE}/page.tsx`),
-      route(
-        ADMIN_ROUTES.projects,
-        `${ADMIN_ROUTES_NAMESPACE}/projects/page.tsx`
-      ),
+    ...prefix(ROUTES.admin, [
+      layout(`${ADMIN_ROUTES_NAMESPACE}/layout.tsx`, [
+        index(`${ADMIN_ROUTES_NAMESPACE}/page.tsx`),
+        route(
+          ADMIN_ROUTES.projects,
+          `${ADMIN_ROUTES_NAMESPACE}/projects/page.tsx`
+        ),
+      ]),
     ]),
   ]),
+  ...prefix("/api", [route("/cloudinary", `${API_NAMESPACE}/cloudinary.ts`)]),
 ] satisfies RouteConfig;

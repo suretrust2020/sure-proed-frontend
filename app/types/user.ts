@@ -15,3 +15,5 @@ export type T_User = {
   linkedin_url: string | null;
   placement_company: string | null;
 };
+
+export type T_Feature_Access = "admin" | "community-services";

@@ -113,3 +113,21 @@ export const fetchFeaturedProjects = async () => {
     }))
   );
 };
+
+export const getProjects = async (courseId: number) => {
+  await connectToMongo();
+  const projects = await Projects.find(
+    { courseId },
+    { createdAt: 0, updatedAt: 0 }
+  )
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return await Promise.all(
+    projects.map(async (project: any) => ({
+      ...project,
+      _id: project._id.toString(),
+      course: await fetchCourseById(project.courseId),
+    }))
+  );
+};

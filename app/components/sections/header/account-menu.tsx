@@ -5,6 +5,7 @@ import { Link, useNavigation, useSubmit } from "react-router";
 
 export function AccountMenu() {
   const user = useAuthStore((state) => state.user);
+  const featureAccess = useAuthStore((state) => state.featureAccess);
   const submit = useSubmit();
   const navigation = useNavigation();
 
@@ -32,6 +33,11 @@ export function AccountMenu() {
             <Menu.Item asChild value="profile">
               <Link to={"/profile"}>Profile</Link>
             </Menu.Item>
+            {featureAccess.includes("admin") && (
+              <Menu.Item asChild value="admin">
+                <Link to={"/admin"}>Admin</Link>
+              </Menu.Item>
+            )}
 
             <Menu.Item
               value="logout"
