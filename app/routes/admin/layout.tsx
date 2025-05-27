@@ -13,12 +13,13 @@ export default function ProtectedLayout() {
     <Stack gap={0} flex={1} direction={"row"}>
       <Flex
         as="aside"
-        h={"svh"}
-        width={"250px"}
+        h={"vh"}
+        width={"240px"}
         overflowY={"auto"}
         borderRight={"1px solid"}
         borderColor={"gray.muted"}
         direction={"column"}
+        flex={"none"}
       >
         <Box
           height={12}
@@ -36,10 +37,9 @@ export default function ProtectedLayout() {
           <SidebarLinks />
         </Box>
       </Flex>
-      <Flex direction={"column"} as="main" h={"svh"} flex={1}>
+      <Flex direction={"column"} as="main" h={"vh"} overflowY={"auto"}>
         <Box
           as={"header"}
-          height={12}
           display={"flex"}
           alignItems={"center"}
           justifyContent={"space-between"}
@@ -47,10 +47,16 @@ export default function ProtectedLayout() {
           px={4}
           borderBottom={"1px solid"}
           borderColor={"gray.muted"}
+          height={12}
+          flex={"none"}
+          pos={"sticky"}
+          top={0}
+          background={"bg"}
+          zIndex={10}
         >
           <AdminBreadcrumbs />
         </Box>
-        <Box flex={1} p={4} overflowY={"auto"}>
+        <Box flex={"none"} p={4}>
           <Outlet />
         </Box>
       </Flex>

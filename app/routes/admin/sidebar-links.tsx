@@ -32,11 +32,11 @@ export function SidebarLinks() {
           >
             {({ isActive }) => (
               <HStack
-                bg={isActive ? "gray.subtle" : "transparent"}
+                bg={isActive ? "purple.subtle" : "transparent"}
                 py={1.5}
                 px={2}
                 _hover={{
-                  background: "gray.subtle",
+                  background: "purple.subtle",
                 }}
                 rounded={"md"}
                 gap={2}

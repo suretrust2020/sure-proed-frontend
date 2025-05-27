@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+type ProjectStatus = "pending" | "approved" | "declined";
+
 export type ProjectType = {
   _id?: any;
   name: string;
@@ -12,6 +14,7 @@ export type ProjectType = {
   createdAt: Date | string;
   updatedAt: Date | string;
   authorAvatar: string;
+  status: ProjectStatus;
 };
 
 // Define a schema that matches the ProjectType (excluding _id)
@@ -25,6 +28,7 @@ const schema = new mongoose.Schema<ProjectType>(
     link: { type: String, required: true },
     author: { type: String, required: true },
     authorAvatar: { type: String, required: true },
+    status: { type: String, required: true, default: "pending" },
   },
   {
     timestamps: true,

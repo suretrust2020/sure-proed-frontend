@@ -131,3 +131,41 @@ export const getProjects = async (courseId: number) => {
     }))
   );
 };
+
+export const getAllProjects = async ({
+  limit = 10,
+  page,
+}: {
+  page: number;
+  limit: number;
+}) => {
+  await connectToMongo();
+
+  const skip = (page - 1) * limit;
+  const filters: any = {};
+
+  const [projects, total] = await Promise.all([
+    Projects.find(filters)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(skip)
+      .lean(),
+    Projects.countDocuments(filters),
+  ]);
+
+  const items = await Promise.all(
+    projects.map(async (project: any) => ({
+      ...project,
+      _id: project._id.toString(),
+      course: await fetchCourseById(project.courseId),
+    }))
+  );
+
+  const hasMore = skip + projects.length < total;
+
+  return {
+    items,
+    total,
+    hasMore,
+  };
+};
