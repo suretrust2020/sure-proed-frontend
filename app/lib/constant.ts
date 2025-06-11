@@ -48,6 +48,7 @@ const ROUTES = {
   internships: "internships",
   lst: "lifeskills-training-program",
   admin: "admin",
+  successStories: "success-stories",
 };
 
 const PROTECTED_ROUTES = {
