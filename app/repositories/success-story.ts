@@ -52,3 +52,13 @@ export const getSuccessStories = async ({
     hasMore,
   };
 };
+
+export const getSuccessStory = async (id?: string) => {
+  await connectToMongo();
+  const result = await SuccessStory.findById(id).lean<SuccessStoryType>();
+  if (!result) return null;
+  return {
+    ...result,
+    _id: result._id?.toString(),
+  };
+};

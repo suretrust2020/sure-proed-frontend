@@ -100,6 +100,10 @@ export default [
           "create",
           `${PUBLIC_ROUTES_NAMESPACE}/${ROUTES.successStories}/create/page.tsx`
         ),
+        route(
+          ":id",
+          `${PUBLIC_ROUTES_NAMESPACE}/${ROUTES.successStories}/details/page.tsx`
+        ),
       ]),
     ]),
     layout(`${ROUTES_DIR}/auth/layout.tsx`, [

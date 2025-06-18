@@ -11,6 +11,7 @@ export const commonLinks = [
   { name: "Gallery", href: ROUTES.gallery },
   { name: "Alumni", href: ROUTES.alumni },
   { name: "Volunteers", href: ROUTES.volunteers },
+  { name: "Success Stories", href: ROUTES.successStories },
 ];
 
 export const importantLinks = [

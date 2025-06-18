@@ -15,6 +15,9 @@ export type SuccessStoryType = {
   batch?: string;
   trainer?: string;
   status: SuccessStoryStatus;
+  linkedin?: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 const schema = new Schema(
@@ -35,6 +38,7 @@ const schema = new Schema(
       type: String,
       default: "pending",
     },
+    linkedin: String,
   },
   {
     timestamps: true,

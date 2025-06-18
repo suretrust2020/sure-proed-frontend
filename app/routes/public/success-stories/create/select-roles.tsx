@@ -1,4 +1,4 @@
-import { Fieldset, HStack, RadioCard } from "@chakra-ui/react";
+import { Field, HStack, RadioCard } from "@chakra-ui/react";
 import { Controller } from "react-hook-form";
 import { roles } from "../config";
 
@@ -10,8 +10,8 @@ export function SelectRoles({
   control: any;
 }) {
   return (
-    <Fieldset.Root invalid={!!error}>
-      <Fieldset.Legend>Choose Role</Fieldset.Legend>
+    <Field.Root invalid={!!error}>
+      <Field.Label>Choose Role</Field.Label>
       <Controller
         name="role"
         control={control}
@@ -26,6 +26,7 @@ export function SelectRoles({
             onValueChange={({ value }) => {
               field.onChange(value);
             }}
+            w={"full"}
           >
             <HStack w="full">
               {roles.map((item) => (
@@ -40,7 +41,7 @@ export function SelectRoles({
           </RadioCard.Root>
         )}
       />
-      {error && <Fieldset.ErrorText>{error}</Fieldset.ErrorText>}
-    </Fieldset.Root>
+      {error && <Field.ErrorText>{error}</Field.ErrorText>}
+    </Field.Root>
   );
 }
