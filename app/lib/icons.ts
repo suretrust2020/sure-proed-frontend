@@ -9,7 +9,6 @@ import {
   LuArrowLeft,
   LuHelpingHand,
 } from "react-icons/lu/index.js";
-
 import { RiApps2Line } from "react-icons/ri/index.js";
 import { FaLinkedin, FaGithub } from "react-icons/fa/index.js";
 import { PiStudent } from "react-icons/pi/index.js";
