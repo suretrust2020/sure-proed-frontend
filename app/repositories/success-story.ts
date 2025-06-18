@@ -16,14 +16,22 @@ export async function createSuccessStory(
 export const getSuccessStories = async ({
   limit = 10,
   page = 1,
+  roles,
 }: {
   page?: number;
   limit?: number;
+  roles?: string[];
 } = {}) => {
   await connectToMongo();
 
   const skip = (page - 1) * limit;
   const filters: any = {};
+
+  if (roles?.length) {
+    filters.role = {
+      $in: roles,
+    };
+  }
 
   const [results, total] = await Promise.all([
     SuccessStory.find(filters)

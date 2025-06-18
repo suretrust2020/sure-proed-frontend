@@ -1,9 +1,7 @@
 import {
   SimpleGrid,
   HStack,
-  VStack,
   Badge,
-  Stack,
   Container,
   Card,
   Button,
@@ -15,12 +13,12 @@ import {
   Calendar1Icon,
   ExternalLinkIcon,
   PlusIcon,
-  UserIcon,
 } from "lucide-react";
 import type { Route } from "./+types/page";
 import { getSuccessStories } from "@/repositories/success-story";
 import { Link } from "react-router";
 import { BatchIcon, CourseIcon } from "@/lib/icons";
+import { RoleFilters } from "./role-filters";
 
 export default function SuccessStoryList({
   loaderData: { successStories },
@@ -29,12 +27,15 @@ export default function SuccessStoryList({
     <Container>
       <HStack justify={"space-between"} gap={4} mb={8}>
         <Heading>Success Stories</Heading>
-        <Button size={"sm"} variant={"subtle"} asChild>
-          <Link to={"/success-stories/create"}>
-            <PlusIcon />
-            Create
-          </Link>
-        </Button>
+        <HStack>
+          <RoleFilters />
+          <Button size={"sm"} variant={"subtle"} asChild>
+            <Link to={"/success-stories/create"}>
+              <PlusIcon />
+              Create
+            </Link>
+          </Button>
+        </HStack>
       </HStack>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
         {successStories.items.map((story) => (
@@ -111,8 +112,10 @@ export default function SuccessStoryList({
   );
 }
 
-export async function loader() {
-  const successStories = await getSuccessStories();
+export async function loader({ request }: Route.LoaderArgs) {
+  const searchParams = new URL(request.url).searchParams;
+  const roles = searchParams.get("roles")?.split(",") || [];
+  const successStories = await getSuccessStories({ roles });
   return {
     successStories,
   };
