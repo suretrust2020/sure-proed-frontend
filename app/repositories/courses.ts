@@ -47,7 +47,7 @@ async function fetchCourseTeachers(id: number) {
   }
 }
 
-async function fetchCourseById(id: number) {
+async function fetchCourseById(id: any) {
   try {
     const resp = await fetch(`${env.BASEURL}/courses/get-course/${id}/`);
     const data = await resp.json();

@@ -10,9 +10,9 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import { SelectCourse } from "@/components/select-course";
+import { SelectCourse } from "./select-course";
 import type { Route } from "./+types/page";
-import { fetchAllCourses } from "@/repositories/courses";
+import { fetchAllCourses, fetchCourseById } from "@/repositories/courses";
 import { PlusIcon } from "lucide-react";
 import { SelectRoles } from "./select-roles";
 import { z } from "zod";
@@ -29,12 +29,14 @@ import {
   useSubmit,
 } from "react-router";
 import { createSuccessStory } from "@/repositories/success-story";
+import type { SuccessStoryType } from "@/lib/mongodb/models/success-story";
 
 const formSchema = z.object({
   role: z.enum(roleValues, {
     errorMap: () => ({ message: "Please select your role in SURE Trust" }),
   }),
   batch: z.string({ message: "Please enter your batch" }).optional(),
+  course: z.string().array(),
   employed: z.boolean().default(false),
   designation: z.string().optional(),
   company: z.string().optional(),
@@ -73,6 +75,7 @@ export default function CreatePage({ loaderData }: Route.ComponentProps) {
       trainer: "",
       employed: false,
       linkedin: "",
+      course: [],
     },
   });
 
@@ -129,10 +132,11 @@ export default function CreatePage({ loaderData }: Route.ComponentProps) {
 
           <Show when={role !== "admirer"}>
             <GridItem colSpan={2}>
-              <Field.Root colorPalette="purple">
-                <Field.Label>Course</Field.Label>
-                <SelectCourse courses={loaderData.courses} />
-              </Field.Root>
+              <SelectCourse
+                courses={loaderData.courses}
+                control={control}
+                error={errors.course?.message}
+              />
             </GridItem>
           </Show>
 
@@ -238,13 +242,17 @@ export async function loader() {
 export async function action({ request }: Route.ActionArgs) {
   try {
     const formData = await request.formData();
-    const entries = Object.fromEntries(formData.entries());
+    const entries = Object.fromEntries(formData.entries()) as any;
 
-    // Convert string values to expected types
+    const course = entries.course
+      ? await fetchCourseById(entries.course)
+      : null;
+
     const rawInput = {
       ...entries,
       employed: entries.employed === "true",
-    } as any;
+      course: course?.course_name,
+    } as SuccessStoryType;
 
     const data = await createSuccessStory(rawInput);
 

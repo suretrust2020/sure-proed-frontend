@@ -43,19 +43,12 @@ export default function SuccessStoryDetails({
         )}
       </VStack>
 
-      <Separator my={6} />
+      <Box my={6} />
 
       {/* Info Section */}
       <VStack align="start" gap={4}>
-        {successStory.employed && (
-          <>
-            {successStory.designation && (
-              <Info label="Designation" value={successStory.designation} />
-            )}
-            {successStory.company && (
-              <Info label="Company" value={successStory.company} />
-            )}
-          </>
+        {successStory.course && (
+          <Info label="Course" value={successStory.course} />
         )}
         {successStory.batch && (
           <Info label="Batch" value={`Batch ${successStory.batch}`} />
@@ -63,8 +56,17 @@ export default function SuccessStoryDetails({
         {successStory.trainer && (
           <Info label="Trainer" value={successStory.trainer} />
         )}
+        {successStory.employed && (
+          <>
+            {successStory.company && (
+              <Info label="Company" value={successStory.company} />
+            )}
+            {successStory.designation && (
+              <Info label="Designation" value={successStory.designation} />
+            )}
+          </>
+        )}
       </VStack>
-
       <Separator my={6} />
 
       {/* Story Content */}

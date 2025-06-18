@@ -15,34 +15,29 @@ export async function createSuccessStory(
 
 export const getSuccessStories = async ({
   limit = 10,
-  page,
+  page = 1,
 }: {
-  page: number;
-  limit: number;
-}) => {
+  page?: number;
+  limit?: number;
+} = {}) => {
   await connectToMongo();
 
   const skip = (page - 1) * limit;
-  const filters: any = {
-    status: "approved",
-  };
+  const filters: any = {};
 
   const [results, total] = await Promise.all([
     SuccessStory.find(filters)
       .sort({ createdAt: -1 })
       .limit(limit)
       .skip(skip)
-      .lean(),
+      .lean<SuccessStoryType[]>(),
     SuccessStory.countDocuments(filters),
   ]);
 
-  const items = await Promise.all(
-    results.map(async (result: any) => ({
-      ...result,
-      _id: result._id.toString(),
-      course: await fetchCourseById(result.course),
-    }))
-  );
+  const items = results.map((result) => ({
+    ...result,
+    _id: result._id?.toString(),
+  }));
 
   const hasMore = skip + results.length < total;
 

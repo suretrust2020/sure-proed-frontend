@@ -14,6 +14,7 @@ export type SuccessStoryType = {
   employed?: boolean;
   batch?: string;
   trainer?: string;
+  course?: string;
   status: SuccessStoryStatus;
   linkedin?: string;
   createdAt: Date;
@@ -33,6 +34,7 @@ const schema = new Schema(
     content: { type: String, required: true },
     employed: { type: Boolean },
     batch: { type: String },
+    course: { type: String },
     trainer: { type: String },
     status: {
       type: String,
