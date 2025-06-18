@@ -152,6 +152,7 @@ export async function action({ request }: Route.ActionArgs) {
 
       const data = preview.data;
       const submission = await upsertProject({
+        status: "pending",
         author: data.owner.login,
         courseId,
         description: data.description,

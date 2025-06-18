@@ -94,10 +94,13 @@ export default [
           `${PUBLIC_ROUTES_NAMESPACE}/internships/projects/page.tsx`
         ),
       ]),
-      route(
-        ROUTES.successStories,
-        `${PUBLIC_ROUTES_NAMESPACE}/${ROUTES.successStories}/page.tsx`
-      ),
+      ...prefix(ROUTES.successStories, [
+        index(`${PUBLIC_ROUTES_NAMESPACE}/${ROUTES.successStories}/page.tsx`),
+        route(
+          "create",
+          `${PUBLIC_ROUTES_NAMESPACE}/${ROUTES.successStories}/create/page.tsx`
+        ),
+      ]),
     ]),
     layout(`${ROUTES_DIR}/auth/layout.tsx`, [
       route("login", `${AUTH_ROUTES_NAMESPACE}/login/page.tsx`),
