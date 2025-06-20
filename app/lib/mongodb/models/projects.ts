@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
 
-type ProjectStatus = "pending" | "approved" | "declined";
+export type ProjectStatus = "pending" | "approved" | "declined";
 
 export type ProjectType = {
   _id?: any;
@@ -14,10 +14,9 @@ export type ProjectType = {
   createdAt: Date | string;
   updatedAt: Date | string;
   authorAvatar: string;
-  status: ProjectStatus;
+  status?: string | ProjectStatus;
 };
 
-// Define a schema that matches the ProjectType (excluding _id)
 const schema = new mongoose.Schema<ProjectType>(
   {
     courseId: { type: Number, required: true },
@@ -35,6 +34,6 @@ const schema = new mongoose.Schema<ProjectType>(
   }
 );
 
-// Ensure model type safety
-export const Projects: mongoose.Model<ProjectType> =
-  mongoose.models.Project || mongoose.model<ProjectType>("Project", schema);
+export const Projects: Model<ProjectType> =
+  (mongoose.models?.Project as Model<ProjectType>) ||
+  mongoose.model<ProjectType>("Project", schema);

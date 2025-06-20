@@ -10,7 +10,7 @@ import { Logo } from "@/components/logo";
 
 export default function ProtectedLayout() {
   return (
-    <Stack gap={0} flex={1} direction={"row"}>
+    <Stack gap={0} direction={"row"}>
       <Flex
         as="aside"
         h={"vh"}
@@ -37,7 +37,7 @@ export default function ProtectedLayout() {
           <SidebarLinks />
         </Box>
       </Flex>
-      <Flex direction={"column"} as="main" h={"vh"} overflowY={"auto"}>
+      <Flex direction={"column"} as="main" h={"vh"} flex={1} overflowY={"auto"}>
         <Box
           as={"header"}
           display={"flex"}

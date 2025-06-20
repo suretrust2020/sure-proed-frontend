@@ -5,6 +5,7 @@ import type { Course } from "@/lib/types";
 import { Badge, HStack, IconButton, Table, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { ExternalLinkIcon } from "lucide-react";
+import { StatusMenu } from "../status-menu";
 
 export function ProjectsTable({
   items,
@@ -56,7 +57,7 @@ export function ProjectsTable({
                 </Table.Cell>
                 <Table.Cell>
                   <Text w={"200px"} fontSize={"sm"} lineClamp={2}>
-                    {item.course.course_name}
+                    {item.course ? item.course.course_name : "N/A"}
                   </Text>
                 </Table.Cell>
                 <Table.Cell>
@@ -85,13 +86,16 @@ export function ProjectsTable({
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Tooltip content="Open project">
-                    <IconButton size={"xs"} asChild variant={"outline"}>
-                      <a target="_blank" href={item.link}>
-                        <ExternalLinkIcon />
-                      </a>
-                    </IconButton>
-                  </Tooltip>
+                  <HStack>
+                    <Tooltip content="Open project">
+                      <IconButton size={"xs"} asChild variant={"outline"}>
+                        <a target="_blank" href={item.link}>
+                          <ExternalLinkIcon />
+                        </a>
+                      </IconButton>
+                    </Tooltip>
+                    <StatusMenu id={item._id} status={item.status} />
+                  </HStack>
                 </Table.Cell>
               </Table.Row>
             );

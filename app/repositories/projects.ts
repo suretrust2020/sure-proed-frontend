@@ -42,13 +42,11 @@ export async function fetchGitHubRepoData(repoUrl?: string) {
   }
 }
 
-export const upsertProject = async (
-  project: Omit<ProjectType, "_id" | "createdAt" | "updatedAt">
-) => {
+export const upsertProject = async (project: Partial<ProjectType>) => {
   await connectToMongo();
   const updatedProject = await Projects.findOneAndUpdate(
     { name: project.name, author: project.author }, // match both name + author
-    { $set: project },
+    { $set: project, $setOnInsert: { status: "pending" } },
     { upsert: true, new: true }
   ).lean();
 
@@ -139,33 +137,58 @@ export const getAllProjects = async ({
   page: number;
   limit: number;
 }) => {
+  try {
+    await connectToMongo();
+    const skip = (page - 1) * limit;
+    const filters: any = {};
+
+    const [projects, total] = await Promise.all([
+      Projects.find(filters)
+        .sort({ createdAt: -1 })
+        .limit(limit)
+        .skip(skip)
+        .lean(),
+      Projects.countDocuments(filters),
+    ]);
+
+    const items = await Promise.all(
+      projects.map(async (project: any) => ({
+        ...project,
+        _id: project._id.toString(),
+        course: project.courseId
+          ? await fetchCourseById(project.courseId)
+          : null,
+      }))
+    );
+
+    const hasMore = skip + projects.length < total;
+    return {
+      items,
+      total,
+      hasMore,
+    };
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+type UpdateProjectInput = Partial<
+  Omit<ProjectType, "_id" | "createdAt" | "updatedAt">
+> & {
+  id?: string;
+};
+export const updateProject = async (project: UpdateProjectInput) => {
   await connectToMongo();
 
-  const skip = (page - 1) * limit;
-  const filters: any = {};
+  const { id, ...updateFields } = project;
+  if (!id) return null;
 
-  const [projects, total] = await Promise.all([
-    Projects.find(filters)
-      .sort({ createdAt: -1 })
-      .limit(limit)
-      .skip(skip)
-      .lean(),
-    Projects.countDocuments(filters),
-  ]);
+  const updated = await Projects.findByIdAndUpdate(
+    id,
+    { $set: updateFields },
+    { new: true }
+  ).lean();
 
-  const items = await Promise.all(
-    projects.map(async (project: any) => ({
-      ...project,
-      _id: project._id.toString(),
-      course: await fetchCourseById(project.courseId),
-    }))
-  );
-
-  const hasMore = skip + projects.length < total;
-
-  return {
-    items,
-    total,
-    hasMore,
-  };
+  return updated;
 };
