@@ -1,3 +1,4 @@
+import { ADMIN_ROUTES } from "@/lib/constant";
 import { Box, For, HStack, Text, VStack } from "@chakra-ui/react";
 import { FolderGit2Icon, LeafIcon, ShieldUserIcon } from "lucide-react";
 import { NavLink } from "react-router";
@@ -12,7 +13,12 @@ export function SidebarLinks() {
     {
       name: "Projects",
       icon: <FolderGit2Icon size={16} />,
-      link: "/admin/projects",
+      link: `/admin/${ADMIN_ROUTES.projects}`,
+    },
+    {
+      name: "Success Stories",
+      icon: <FolderGit2Icon size={16} />,
+      link: `/admin/${ADMIN_ROUTES.successStories}`,
     },
     {
       name: "Plantations",

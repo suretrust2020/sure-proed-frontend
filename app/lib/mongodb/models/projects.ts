@@ -1,6 +1,5 @@
+import type { ApprovalStatus } from "@/lib/types";
 import mongoose, { Model } from "mongoose";
-
-export type ProjectStatus = "pending" | "approved" | "declined";
 
 export type ProjectType = {
   _id?: any;
@@ -14,7 +13,7 @@ export type ProjectType = {
   createdAt: Date | string;
   updatedAt: Date | string;
   authorAvatar: string;
-  status?: string | ProjectStatus;
+  status?: string | ApprovalStatus;
 };
 
 const schema = new mongoose.Schema<ProjectType>(

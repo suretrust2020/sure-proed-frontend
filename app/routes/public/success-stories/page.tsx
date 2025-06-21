@@ -115,7 +115,7 @@ export default function SuccessStoryList({
 export async function loader({ request }: Route.LoaderArgs) {
   const searchParams = new URL(request.url).searchParams;
   const roles = searchParams.get("roles")?.split(",") || [];
-  const successStories = await getSuccessStories({ roles });
+  const successStories = await getSuccessStories({ roles, status: "approved" });
   return {
     successStories,
   };

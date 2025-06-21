@@ -1,11 +1,10 @@
-import mongoose, { type ObjectId } from "mongoose";
+import type { ApprovalStatus } from "@/lib/types";
+import mongoose from "mongoose";
 
 const { models, Schema, model } = mongoose;
 
-type SuccessStoryStatus = "pending" | "approved" | "declined";
-
 export type SuccessStoryType = {
-  _id?: ObjectId | string;
+  _id?: string;
   name: string;
   role: "student" | "trainer" | "volunteer" | "admirer";
   company?: string;
@@ -15,7 +14,7 @@ export type SuccessStoryType = {
   batch?: string;
   trainer?: string;
   course?: string;
-  status: SuccessStoryStatus;
+  status?: ApprovalStatus | string;
   linkedin?: string;
   createdAt: Date;
   updatedAt: Date;

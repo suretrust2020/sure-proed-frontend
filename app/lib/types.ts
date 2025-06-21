@@ -265,3 +265,5 @@ export type GithubRepoType = {
     html_url: string;
   };
 };
+
+export type ApprovalStatus = "pending" | "approved" | "declined";

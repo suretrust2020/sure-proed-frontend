@@ -3,7 +3,7 @@ import {
   SuccessStory,
   type SuccessStoryType,
 } from "@/lib/mongodb/models/success-story";
-import { fetchCourseById } from "./courses";
+import type { ApprovalStatus } from "@/lib/types";
 
 export async function createSuccessStory(
   data: Omit<SuccessStoryType, "_id" | "createdAt" | "updatedAt">
@@ -17,10 +17,12 @@ export const getSuccessStories = async ({
   limit = 10,
   page = 1,
   roles,
+  status,
 }: {
   page?: number;
   limit?: number;
   roles?: string[];
+  status?: ApprovalStatus;
 } = {}) => {
   await connectToMongo();
 
@@ -31,6 +33,9 @@ export const getSuccessStories = async ({
     filters.role = {
       $in: roles,
     };
+  }
+  if (status) {
+    filters.status = status;
   }
 
   const [results, total] = await Promise.all([
@@ -64,4 +69,25 @@ export const getSuccessStory = async (id?: string) => {
     ...result,
     _id: result._id?.toString(),
   };
+};
+
+export const updateSuccessStories = async (
+  project: Partial<
+    Omit<SuccessStoryType, "_id" | "createdAt" | "updatedAt"> & {
+      id: string;
+    }
+  >
+) => {
+  await connectToMongo();
+
+  const { id, ...updateFields } = project;
+  if (!id) return null;
+
+  const updated = await SuccessStory.findByIdAndUpdate(
+    id,
+    { $set: updateFields },
+    { new: true }
+  ).lean();
+
+  return updated;
 };

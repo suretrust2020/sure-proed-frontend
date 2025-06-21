@@ -1,21 +1,28 @@
 import { Box, Heading, Stack } from "@chakra-ui/react";
 import type { Route } from "./+types/page";
-import { getAllProjects, updateProject } from "@/repositories/projects";
-import { ProjectsTable } from "./project-table";
 import { Pagination } from "@/components/shared/pagination";
 import { redirect, useSearchParams } from "react-router";
 import { PAGE_SIZE } from "@/lib/constant";
+import {
+  getSuccessStories,
+  updateSuccessStories,
+} from "@/repositories/success-story";
+import { DataTable } from "./data-table";
 
-export default function AdminHome({ loaderData }: Route.ComponentProps) {
+export default function SuccessStoriesPage({
+  loaderData,
+}: Route.ComponentProps) {
   const [searchParams] = useSearchParams();
   return (
     <Stack width="full" gap="5">
-      <Heading size="xl">Projects</Heading>
-      {loaderData?.projects && <ProjectsTable {...loaderData.projects} />}
+      <Heading size="xl">Success Stories</Heading>
+      {loaderData?.successStories && (
+        <DataTable {...loaderData.successStories} />
+      )}
       <Box alignSelf={"center"}>
-        {loaderData?.projects && (
+        {loaderData?.successStories && (
           <Pagination
-            count={loaderData.projects.total}
+            count={loaderData.successStories.total}
             page={Number(searchParams.get("page"))}
             pageSize={PAGE_SIZE}
           />
@@ -29,9 +36,9 @@ export async function loader({ request }: Route.LoaderArgs) {
   try {
     const { searchParams } = new URL(request.url);
     const page = Number(searchParams.get("page")) || 1;
-    const projects = await getAllProjects({ page, limit: PAGE_SIZE });
+    const successStories = await getSuccessStories({ page, limit: PAGE_SIZE });
     return {
-      projects,
+      successStories,
     };
   } catch (error) {
     console.error(error);
@@ -43,13 +50,13 @@ export async function action({ request }: Route.LoaderArgs) {
   const formData = await request.formData();
   const status = formData.get("status")?.toString();
   const id = formData.get("id")?.toString();
-  const data = await updateProject({
-    status,
+  const data = await updateSuccessStories({
     id,
+    status,
   });
 
   if (data) {
-    return redirect("/admin/projects");
+    return redirect("/admin/success-stories");
   }
   return {
     error: "Failed to update status try again.",

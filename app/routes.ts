@@ -125,6 +125,10 @@ export default [
           ADMIN_ROUTES.projects,
           `${ADMIN_ROUTES_NAMESPACE}/projects/page.tsx`
         ),
+        route(
+          ADMIN_ROUTES.successStories,
+          `${ADMIN_ROUTES_NAMESPACE}/${ADMIN_ROUTES.successStories}/page.tsx`
+        ),
       ]),
     ]),
   ]),

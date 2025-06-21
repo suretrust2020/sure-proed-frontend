@@ -58,6 +58,7 @@ const PROTECTED_ROUTES = {
 
 export const ADMIN_ROUTES = {
   projects: "projects",
+  successStories: "success-stories",
 };
 
 export const COMMUNITY_SERVICE_USER_ROLES = [
