@@ -56,7 +56,7 @@ export const upsertProject = async (project: Partial<ProjectType>) => {
 export const getAllProjectsByCourseId = async (courseId: number) => {
   await connectToMongo();
   const projects = await Projects.find(
-    { courseId },
+    { courseId, status: "approved" },
     { createdAt: 0, updatedAt: 0 }
   )
     .sort({ createdAt: -1 })

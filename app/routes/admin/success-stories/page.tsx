@@ -13,6 +13,7 @@ export default function SuccessStoriesPage({
   loaderData,
 }: Route.ComponentProps) {
   const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get("page") || 1);
   return (
     <Stack width="full" gap="5">
       <Heading size="xl">Success Stories</Heading>
@@ -23,7 +24,7 @@ export default function SuccessStoriesPage({
         {loaderData?.successStories && (
           <Pagination
             count={loaderData.successStories.total}
-            page={Number(searchParams.get("page"))}
+            page={page}
             pageSize={PAGE_SIZE}
           />
         )}

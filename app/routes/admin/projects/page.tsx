@@ -8,6 +8,7 @@ import { PAGE_SIZE } from "@/lib/constant";
 
 export default function AdminHome({ loaderData }: Route.ComponentProps) {
   const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get("page") || 1);
   return (
     <Stack width="full" gap="5">
       <Heading size="xl">Projects</Heading>
@@ -16,7 +17,7 @@ export default function AdminHome({ loaderData }: Route.ComponentProps) {
         {loaderData?.projects && (
           <Pagination
             count={loaderData.projects.total}
-            page={Number(searchParams.get("page"))}
+            page={page}
             pageSize={PAGE_SIZE}
           />
         )}
@@ -43,13 +44,17 @@ export async function action({ request }: Route.LoaderArgs) {
   const formData = await request.formData();
   const status = formData.get("status")?.toString();
   const id = formData.get("id")?.toString();
+
   const data = await updateProject({
     status,
     id,
   });
 
   if (data) {
-    return redirect("/admin/projects");
+    const { searchParams } = new URL(request.url);
+    const page = Number(searchParams.get("page")) || 1;
+
+    return redirect(`/admin/projects?page=${page}`);
   }
   return {
     error: "Failed to update status try again.",
