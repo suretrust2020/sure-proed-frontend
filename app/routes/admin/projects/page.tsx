@@ -1,6 +1,6 @@
 import { Box, Heading, Stack } from "@chakra-ui/react";
 import type { Route } from "./+types/page";
-import { getAllProjects, updateProject } from "@/repositories/projects";
+import { bulkUpdateProject, getAllProjects } from "@/repositories/projects";
 import { ProjectsTable } from "./project-table";
 import { Pagination } from "@/components/shared/pagination";
 import { redirect, useSearchParams } from "react-router";
@@ -43,11 +43,15 @@ export async function loader({ request }: Route.LoaderArgs) {
 export async function action({ request }: Route.LoaderArgs) {
   const formData = await request.formData();
   const status = formData.get("status")?.toString();
-  const id = formData.get("id")?.toString();
+  const ids = formData.get("ids")?.toString()?.split(",");
 
-  const data = await updateProject({
+  if (!ids?.length)
+    return {
+      error: "Select data to delete",
+    };
+
+  const data = await bulkUpdateProject(ids, {
     status,
-    id,
   });
 
   if (data) {

@@ -184,10 +184,27 @@ export const updateProject = async (project: UpdateProjectInput) => {
   const { id, ...updateFields } = project;
   if (!id) return null;
 
-  const updated = await Projects.findByIdAndUpdate(
-    id,
-    { $set: updateFields },
-    { new: true }
+  const updated = await Projects.findByIdAndUpdate(id, {
+    $set: updateFields,
+  }).lean();
+
+  return updated;
+};
+
+type BulkUpdateProjectInput = Partial<
+  Omit<ProjectType, "_id" | "createdAt" | "updatedAt">
+>;
+
+export const bulkUpdateProject = async (
+  ids: any[],
+  project: BulkUpdateProjectInput
+) => {
+  await connectToMongo();
+  if (!ids.length) return null;
+
+  const updated = await Projects.updateMany(
+    { _id: { $in: ids } },
+    { $set: project }
   ).lean();
 
   return updated;

@@ -25,7 +25,7 @@ export function StatusMenu({
               value={status}
               onValueChange={(e) => {
                 fetcher.submit(
-                  { status: e.value, id },
+                  { status: e.value, ids: id },
                   {
                     method: "post",
                   }
