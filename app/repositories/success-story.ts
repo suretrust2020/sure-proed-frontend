@@ -91,3 +91,21 @@ export const updateSuccessStories = async (
 
   return updated;
 };
+
+type BulkUpdateProjectInput = Partial<
+  Omit<SuccessStoryType, "_id" | "createdAt" | "updatedAt">
+>;
+export const bulkUpdateSuccessStories = async (
+  ids: any[],
+  project: BulkUpdateProjectInput
+) => {
+  await connectToMongo();
+  if (!ids.length) return null;
+
+  const updated = await SuccessStory.updateMany(
+    { _id: { $in: ids } },
+    { $set: project }
+  ).lean();
+
+  return updated;
+};

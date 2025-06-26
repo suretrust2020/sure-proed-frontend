@@ -4,8 +4,8 @@ import { Pagination } from "@/components/shared/pagination";
 import { redirect, useSearchParams } from "react-router";
 import { PAGE_SIZE } from "@/lib/constant";
 import {
+  bulkUpdateSuccessStories,
   getSuccessStories,
-  updateSuccessStories,
 } from "@/repositories/success-story";
 import { DataTable } from "./data-table";
 
@@ -50,14 +50,21 @@ export async function loader({ request }: Route.LoaderArgs) {
 export async function action({ request }: Route.LoaderArgs) {
   const formData = await request.formData();
   const status = formData.get("status")?.toString();
-  const id = formData.get("id")?.toString();
-  const data = await updateSuccessStories({
-    id,
+  const ids = formData.get("ids")?.toString()?.split(",");
+
+  if (!ids?.length)
+    return {
+      error: "Select data to delete",
+    };
+  const data = await bulkUpdateSuccessStories(ids, {
     status,
   });
 
   if (data) {
-    return redirect("/admin/success-stories");
+    const { searchParams } = new URL(request.url);
+    const page = Number(searchParams.get("page")) || 1;
+
+    return redirect(`/admin/success-stories?page=${page}`);
   }
   return {
     error: "Failed to update status try again.",

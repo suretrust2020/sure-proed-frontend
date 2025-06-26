@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const { models, Schema, model } = mongoose;
 
 export type SuccessStoryType = {
-  _id?: string;
+  _id: string;
   name: string;
   role: "student" | "trainer" | "volunteer" | "admirer";
   company?: string;

@@ -5,11 +5,11 @@ import { useFetcher } from "react-router";
 export function AdminActionBar({
   open,
   selection,
-  handleClear,
+  onClear,
 }: {
   open: boolean;
   selection: any[];
-  handleClear?: () => void;
+  onClear?: () => void;
 }) {
   const statusActions = [
     { label: "Approve", status: "approved" },
@@ -27,7 +27,7 @@ export function AdminActionBar({
         method: "post",
       }
     );
-    handleClear?.();
+    onClear?.();
   }
 
   return (

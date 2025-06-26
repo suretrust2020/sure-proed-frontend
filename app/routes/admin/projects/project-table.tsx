@@ -13,17 +13,22 @@ import {
 import { format } from "date-fns";
 import { ExternalLinkIcon } from "lucide-react";
 import { StatusMenu } from "../status-menu";
-import { useState } from "react";
 import { AdminActionBar } from "../admin-action-bar";
+import { useSelection } from "../hooks/use-selection";
 
 export function ProjectsTable({
   items,
 }: {
   items: (ProjectType & { course: Course })[];
 }) {
-  const [selection, setSelection] = useState<string[]>([]);
-  const hasSelection = selection.length > 0;
-  const indeterminate = hasSelection && selection.length < items.length;
+  const {
+    handleClearSelection,
+    hasSelection,
+    indeterminate,
+    selection,
+    handleCheckedChange,
+    handleSingleCheckboxChecked,
+  } = useSelection(items);
   return (
     <>
       <Table.ScrollArea borderWidth="1px">
@@ -38,11 +43,7 @@ export function ProjectsTable({
                   checked={
                     indeterminate ? "indeterminate" : selection.length > 0
                   }
-                  onCheckedChange={(changes) => {
-                    setSelection(
-                      changes.checked ? items.map((item) => item._id) : []
-                    );
-                  }}
+                  onCheckedChange={handleCheckedChange}
                 >
                   <Checkbox.HiddenInput />
                   <Checkbox.Control />
@@ -75,13 +76,9 @@ export function ProjectsTable({
                       top="0.5"
                       aria-label="Select row"
                       checked={selection.includes(item._id)}
-                      onCheckedChange={(changes) => {
-                        setSelection((prev) =>
-                          changes.checked
-                            ? [...prev, item._id]
-                            : selection.filter((id) => id !== item._id)
-                        );
-                      }}
+                      onCheckedChange={(change) =>
+                        handleSingleCheckboxChecked(change, item)
+                      }
                     >
                       <Checkbox.HiddenInput />
                       <Checkbox.Control />
@@ -155,7 +152,7 @@ export function ProjectsTable({
       <AdminActionBar
         open={hasSelection}
         selection={selection}
-        handleClear={() => setSelection([])}
+        onClear={handleClearSelection}
       />
     </>
   );
