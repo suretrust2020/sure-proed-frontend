@@ -21,11 +21,12 @@ function CollaboratorCard({ collaborator }: { collaborator: any }) {
   return (
     <a target="_blank" href={collaborator.link}>
       <Card.Root
-        w="fit-content"
+        w="full"
         size="sm"
         variant="elevated"
         _hover={{ bg: "bg.muted" }}
         transition={"all 0.4s "}
+        px={8}
       >
         <Card.Body>{collaborator.name}</Card.Body>
       </Card.Root>

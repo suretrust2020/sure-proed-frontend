@@ -94,7 +94,7 @@ export const fetchFeaturedProjects = async () => {
   const existingIds = groupedProjects.map((p) => p._id);
 
   const additionalProjects = await Projects.find(
-    { _id: { $nin: existingIds } },
+    { _id: { $nin: existingIds }, status: "approved" },
     { createdAt: 0, updatedAt: 0 }
   )
     .sort({ createdAt: -1 })
