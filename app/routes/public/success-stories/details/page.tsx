@@ -96,13 +96,6 @@ export default function SuccessStoryDetails({
             {new Date(successStory.updatedAt).toDateString()}
           </Stat.ValueText>
         </Stat.Root>
-
-        <Stat.Root>
-          <Stat.Label fontSize="xs">Story ID</Stat.Label>
-          <Stat.ValueText fontSize="sm" fontFamily="mono">
-            {successStory._id}
-          </Stat.ValueText>
-        </Stat.Root>
       </SimpleGrid>
     </Container>
   );
