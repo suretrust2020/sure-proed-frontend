@@ -6,7 +6,7 @@ import {
 } from "@/repositories/community-services";
 import type { Route } from "./+types/page";
 import { COMMUNITY_SERVICE_PATH, ROUTES, SITE_NAME } from "@/lib/constant";
-import { ServicesChart } from "../services-chart";
+// import { ServicesChart } from "../services-chart";
 import { CourseCard } from "../course-card";
 import { BloodIcon } from "@/lib/icons";
 import { fetchAllCourses, fetchCourseById } from "@/repositories/courses";
@@ -40,12 +40,12 @@ export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
           />
         </SimpleGrid>
 
-        <Box display={["none", "none", "block"]}>
+        {/* <Box display={["none", "none", "block"]}>
           <ServicesChart
             serviceType="Blood Donations"
             courses={loaderData.result.courses}
           />
-        </Box>
+        </Box> */}
 
         <SimpleGrid columns={[1, 1, 2, 3, 4]} gap={4} mt={8}>
           <For each={loaderData.result.courses}>

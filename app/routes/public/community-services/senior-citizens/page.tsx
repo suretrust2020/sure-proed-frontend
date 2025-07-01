@@ -11,7 +11,7 @@ import {
   ROUTES,
   SITE_NAME,
 } from "@/lib/constant";
-import { ServicesChart } from "../services-chart";
+// import { ServicesChart } from "../services-chart";
 import { CourseCard } from "../course-card";
 import { HelpIcon } from "@/lib/icons";
 import { calculateTimeDifferenceFromNow } from "@/lib/utils";
@@ -56,12 +56,12 @@ export default function SeniorCitizensPage({
           </SimpleGrid>
         </Container>
       </Box>
-      <Container display={["none", "none", "block"]}>
+      {/* <Container display={["none", "none", "block"]}>
         <ServicesChart
           serviceType="Senior Citizen"
           courses={loaderData.result.courses}
         />
-      </Container>
+      </Container> */}
 
       <Container mt={8}>
         <SimpleGrid columns={[1, 1, 2, 3, 4]} gap={4}>

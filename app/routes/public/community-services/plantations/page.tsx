@@ -8,7 +8,7 @@ import type { Route } from "./+types/page";
 import { SITE_NAME } from "@/lib/constant";
 import { CourseCard } from "../course-card";
 import { PlantIcon } from "@/lib/icons";
-import { ServicesChart } from "../services-chart";
+// import { ServicesChart } from "../services-chart";
 import { getAuthSession } from "@/auth.server";
 import { PlantationForm } from "./plantation-form";
 import { fetchAllCourses } from "@/repositories/courses";
@@ -41,9 +41,9 @@ export default function PlatationsPage({ loaderData }: Route.ComponentProps) {
         </SimpleGrid>
       </Box>
 
-      <Box display={["none", "none", "block"]}>
+      {/* <Box display={["none", "none", "block"]}>
         <ServicesChart serviceType="Plantations" courses={loaderData.courses} />
-      </Box>
+      </Box> */}
 
       <Box mt={8}>
         <SimpleGrid columns={[1, 1, 2, 3, 4]} gap={4}>
